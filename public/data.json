@@ -1,0 +1,92 @@
+[
+    {
+        "book_title": "The Silent Valley",
+        "cover_photo": "https://i.ibb.co/FvMB9hj/The-silent-valley.jpg",
+        "book_author": "Aarav Sen",
+        "total_page": 320,
+        "book_category": "Fiction",
+        "reading_status": "Want-to-Read",
+        "book_overview": "A gripping story of a young detective uncovering secrets in a quiet town."
+    },
+    {
+        "book_title": "Quantum Realms",
+        "cover_photo": "https://i.ibb.co/wZ61D4gn/Quantum-realms.jpg",
+        "book_author": "Dr. Naila Rahman",
+        "total_page": 280,
+        "book_category": "Non-Fiction",
+        "reading_status": "Reading",
+        "book_overview": "An accessible explanation of the weird and wonderful world of quantum physics."
+    },
+    {
+        "book_title": "Legends of Dhansiri",
+        "cover_photo": "https://i.ibb.co/XZFRPv8d/legend-of-dhansiri.jpg",
+        "book_author": "Rafiq Zaman",
+        "total_page": 450,
+        "book_category": "Fantasy",
+        "reading_status": "Read",
+        "book_overview": "A mythical journey through the magical rivers of ancient Bengal."
+    },
+    {
+        "book_title": "Mind Matters",
+        "cover_photo": "https://i.ibb.co/svYMFzTF/mind-matters.jpg",
+        "book_author": "Tania Sattar",
+        "total_page": 210,
+        "book_category": "Non-Fiction",
+        "reading_status": "Reading",
+        "book_overview": "Exploring mental health and the science behind human behavior."
+    },
+    {
+        "book_title": "The Moonlit Path",
+        "cover_photo": "https://i.ibb.co/Y49Nvf68/moon-path.jpg",
+        "book_author": "Farhan Kabir",
+        "total_page": 390,
+        "book_category": "Fiction",
+        "reading_status": "Read",
+        "book_overview": "A romantic tale of two souls searching for light in their darkest hours."
+    },
+    {
+        "book_title": "The Fire Within",
+        "cover_photo": "https://i.ibb.co/v6L57DyW/fire-within.jpg",
+        "book_author": "Ishrat Hossain",
+        "total_page": 330,
+        "book_category": "Fantasy",
+        "reading_status": "Want-to-Read",
+        "book_overview": "A young girl's quest to control her magical powers in a land torn by war."
+    },
+    {
+        "book_title": "Tales from the Hills",
+        "cover_photo": "https://i.ibb.co/zW7f8MKW/tales-from-the-hills.jpg",
+        "book_author": "Jamil Anwar",
+        "total_page": 300,
+        "book_category": "Fiction",
+        "reading_status": "Reading",
+        "book_overview": "Stories inspired by the mystic hills of Sylhet and their ancient spirits."
+    },
+    {
+        "book_title": "The Science of Sleep",
+        "cover_photo": "https://i.ibb.co/v68zDGJX/science-of-sleep.jpg",
+        "book_author": "Dr. Nusrat Anjum",
+        "total_page": 250,
+        "book_category": "Non-Fiction",
+        "reading_status": "Want-to-Read",
+        "book_overview": "Discover the fascinating science behind how and why we sleep."
+    },
+    {
+        "book_title": "Kingdom of the Mist",
+        "cover_photo": "https://i.ibb.co/Q7z8jWJZ/kingdom-of-the-mist.jpg",
+        "book_author": "Rezaul Karim",
+        "total_page": 410,
+        "book_category": "Fantasy",
+        "reading_status": "Read",
+        "book_overview": "A battle between ancient clans in a kingdom where mist controls the fate of all."
+    },
+    {
+        "book_title": "Broken Verses",
+        "cover_photo": "https://i.ibb.co/cKws4h5x/broken-verse.jpg",
+        "book_author": "Nazia Haque",
+        "total_page": 275,
+        "book_category": "Fiction",
+        "reading_status": "Reading",
+        "book_overview": "An emotional journey through the fragments of love, loss, and poetry."
+    }
+]

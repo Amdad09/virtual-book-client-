@@ -16,36 +16,37 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                Component:Home
+                Component: Home,
             },
             {
                 path: '/addBook',
-                Component:AddBook
+                Component: AddBook,
             },
             {
                 path: '/updateBook',
-                Component:UpdateBook
+                Component: UpdateBook,
             },
             {
                 path: '/profile',
-                Component:Profile
+                Component: Profile,
             },
             {
                 path: '/bookShelf',
-                Component:BookShelf
+                loader: () => fetch('http://localhost:3000/books'),
+                Component: BookShelf,
             },
             {
                 path: '/bookDetails',
-                Component:BookDetails
+                Component: BookDetails,
             },
             {
                 path: '/register',
-                Component:Register
+                Component: Register,
             },
             {
                 path: '/logIn',
-                Component:LogIn
-            }
-        ]
+                Component: LogIn,
+            },
+        ],
     },
 ]);

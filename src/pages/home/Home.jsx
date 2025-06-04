@@ -1,11 +1,13 @@
 import React from 'react';
-import Bannerr from './Bannerr';
+import Banner from './Banner';
+import FeaturedCategories from './FeaturedCategories/FeaturedCategories';
 
 const Home = () => {
+    
     return (
         <div>
-            <Bannerr />
-            this is home
+            <Banner />
+            <FeaturedCategories/>
         </div>
     );
 };
