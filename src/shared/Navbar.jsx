@@ -1,14 +1,45 @@
-import React from 'react';
-import { NavLink } from 'react-router';
-import './Navbar.css'
+import React, { use } from 'react';
+import { Link, NavLink } from 'react-router';
+import './Navbar.css';
+import { AuthContext } from '../contexts/AuthContext';
+import Swal from 'sweetalert2';
+import Loading from './Loading';
 const Navbar = () => {
+    const { user, logOutUser } = use(AuthContext);
+    console.log(user);
+
+    // if (loading) {
+    //     return <Loading/>
+    // }
+
+    const handleLogOut = () => {
+        logOutUser().then(() => {
+            Swal.fire({
+                title: 'Logged Out',
+                text: 'You have successfully logged out.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d97706',
+            });
+        });
+    };
     const links = (
         <>
-            <li><NavLink to='/'>Home</NavLink></li>
-            <li><NavLink to='/bookShelf'>Book Shelf</NavLink></li>
-            <li><NavLink to='/addBook'>Add Book</NavLink></li>
-            <li><NavLink to='/updateBook'>Update Book</NavLink></li>
-            <li><NavLink to='/profile'>Profile</NavLink></li>
+            <li>
+                <NavLink to="/">Home</NavLink>
+            </li>
+            <li>
+                <NavLink to="/bookShelf">Book Shelf</NavLink>
+            </li>
+            <li>
+                <NavLink to="/addBook">Add Book</NavLink>
+            </li>
+            <li>
+                <NavLink to="/updateBook">Update Book</NavLink>
+            </li>
+            <li>
+                <NavLink to="/profile">Profile</NavLink>
+            </li>
         </>
     );
     return (
@@ -40,16 +71,42 @@ const Navbar = () => {
                         {links}
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">Book Hut</a>
+                <Link to="/" className="flex gap-3">
+                    <img
+                        className="w-10 h-10 rounded-full"
+                        src="logo.png"
+                        alt=""
+                    />
+                    <h2 className="text-2xl font-semibold">Book Hut</h2>
+                </Link>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                   {links}
-                </ul>
+                <ul className="menu menu-horizontal px-1">{links}</ul>
             </div>
             <div className="navbar-end">
-                <button className="btn">Register</button>
-                <button className="btn ml-3">Log In</button>
+                {user ? (
+                    <>
+                        <span>{user?.email}</span>
+                        <button
+                            onClick={handleLogOut}
+                            className="btn drop-shadow-md bg-amber-600 hover:bg-amber-700 btn-neutral mr-3">
+                            Log Out
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Link
+                            to="/register"
+                            className="btn drop-shadow-md bg-amber-600 hover:bg-amber-700 btn-neutral mr-3">
+                            Register
+                        </Link>
+                        <Link
+                            to="/logIn"
+                            className="btn drop-shadow-md bg-amber-600 hover:bg-amber-700 btn-neutral ">
+                            Log In
+                        </Link>
+                    </>
+                )}
             </div>
         </div>
     );

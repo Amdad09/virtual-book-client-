@@ -6,6 +6,8 @@ import UpdateBook from "../pages/UpdateBook/UpdateBook";
 import Profile from "../pages/Profile/Profile";
 import BookShelf from "../pages/BookShelf/BookShelf";
 import BookDetails from "../pages/BookDetails/BookDetails";
+import Register from "../pages/Register/Register";
+import LogIn from "../pages/LogIn/LogIn";
 
 export const router = createBrowserRouter([
     {
@@ -35,6 +37,14 @@ export const router = createBrowserRouter([
             {
                 path: '/bookDetails',
                 Component:BookDetails
+            },
+            {
+                path: '/register',
+                Component:Register
+            },
+            {
+                path: '/logIn',
+                Component:LogIn
             }
         ]
     },
