@@ -1,12 +1,15 @@
 import Lottie from 'lottie-react';
 import React, { use } from 'react';
 import login from '../../assets/lottie/login.json'
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext';
 import Swal from 'sweetalert2';
 import GoogleSignIn from '../../shared/GoogleSignIn';
 const LogIn = () => {
     const { loginUser } = use(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state || '/';
 
     const handleLogIn = e => {
         e.preventDefault();
@@ -18,6 +21,7 @@ const LogIn = () => {
         loginUser(email, password)
             .then(result => {
                 console.log(result.user);
+                navigate(from);
                 Swal.fire({
                     title: 'Login Successful!',
                     text: 'Welcome back!',

@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router';
 
 const BookCard = ({ book }) => {
-    const { book_title, cover_photo, book_overview } = book;
+    const { _id,book_title, cover_photo, book_overview } = book;
 
     return (
         <motion.div
@@ -28,14 +29,14 @@ const BookCard = ({ book }) => {
                     {book_overview?.slice(0, 100)}...
                 </p>
 
-                <div className="flex justify-center">
+                <Link to={`/bookDetails/${_id}`} className="flex justify-center">
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="px-5 py-2 rounded-md bg-amber-600 text-white font-semibold shadow hover:bg-amber-700 transition-colors">
                         Book Details
                     </motion.button>
-                </div>
+                </Link>
             </div>
         </motion.div>
     );

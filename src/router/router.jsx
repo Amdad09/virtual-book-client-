@@ -36,7 +36,8 @@ export const router = createBrowserRouter([
                 Component: BookShelf,
             },
             {
-                path: '/bookDetails',
+                path: '/bookDetails/:id',
+                loader: ({params}) => fetch(`http://localhost:3000/books/${params.id}`),
                 Component: BookDetails,
             },
             {
