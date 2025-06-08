@@ -3,14 +3,8 @@ import { Link, NavLink } from 'react-router';
 import './Navbar.css';
 import { AuthContext } from '../contexts/AuthContext';
 import Swal from 'sweetalert2';
-import Loading from './Loading';
 const Navbar = () => {
     const { user, logOutUser } = use(AuthContext);
-    console.log(user);
-
-    // if (loading) {
-    //     return <Loading/>
-    // }
 
     const handleLogOut = () => {
         logOutUser().then(() => {
