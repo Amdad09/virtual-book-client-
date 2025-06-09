@@ -149,6 +149,7 @@ const Register = () => {
                             <input
                                 type="text"
                                 name="name"
+                                required
                                 className="input w-full"
                                 placeholder="Name"
                             />
@@ -157,6 +158,7 @@ const Register = () => {
                             <input
                                 type="email"
                                 name="email"
+                                required
                                 className="input w-full"
                                 placeholder="Email"
                             />
@@ -165,6 +167,7 @@ const Register = () => {
                             <input
                                 type="url"
                                 name="photo"
+                                required
                                 className="input w-full"
                                 placeholder="Photo URL"
                             />

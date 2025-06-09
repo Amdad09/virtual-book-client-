@@ -5,17 +5,21 @@ import { AuthContext } from '../contexts/AuthContext';
 import Swal from 'sweetalert2';
 const Navbar = () => {
     const { user, logOutUser } = use(AuthContext);
-
+    console.log(logOutUser);
     const handleLogOut = () => {
-        logOutUser().then(() => {
-            Swal.fire({
-                title: 'Logged Out',
-                text: 'You have successfully logged out.',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#d97706',
-            });
-        });
+        logOutUser()
+            .then(() => {
+                console.log('logout successfully')
+            // Swal.fire({
+            //     title: 'Logged Out',
+            //     text: 'You have successfully logged out.',
+            //     icon: 'success',
+            //     confirmButtonText: 'OK',
+            //     confirmButtonColor: '#d97706',
+            // })
+        })
+        .catch(err=>console.log(err))
+        
     };
     const links = (
         <>

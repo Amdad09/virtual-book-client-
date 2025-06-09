@@ -68,6 +68,7 @@ const LogIn = () => {
                             <input
                                 type="email"
                                 name='email'
+                                required
                                 className="input w-full"
                                 placeholder="Email"
                             />
