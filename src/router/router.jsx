@@ -9,6 +9,7 @@ import BookDetails from "../pages/BookDetails/BookDetails";
 import Register from "../pages/Register/Register";
 import LogIn from "../pages/LogIn/LogIn";
 import PrivateRoute from "../routes/PrivateRoute";
+import MyBooks from "../pages/MyBooks/MyBooks";
 
 export const router = createBrowserRouter([
     {
@@ -21,15 +22,28 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/addBook',
-                element:<PrivateRoute><AddBook/></PrivateRoute>
+                element: (
+                    <PrivateRoute>
+                        <AddBook />
+                    </PrivateRoute>
+                ),
             },
             {
-                path: '/updateBook',
-                element: <PrivateRoute><UpdateBook/></PrivateRoute>
+                path: '/updateBook/:id',
+                loader: ({params}) => fetch(`http://localhost:3000/books/${params.id}`),
+                element: (
+                    <PrivateRoute>
+                        <UpdateBook />
+                    </PrivateRoute>
+                ),
             },
             {
                 path: '/profile',
-                element:<PrivateRoute><Profile/></PrivateRoute>
+                element: (
+                    <PrivateRoute>
+                        <Profile />
+                    </PrivateRoute>
+                ),
             },
             {
                 path: '/bookShelf',
@@ -38,8 +52,17 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/bookDetails/:id',
-                loader: ({params}) => fetch(`http://localhost:3000/books/${params.id}`),
+                loader: ({ params }) =>
+                    fetch(`http://localhost:3000/books/${params.id}`),
                 Component: BookDetails,
+            },
+            {
+                path: 'myBooks',
+                element: (
+                    <PrivateRoute>
+                        <MyBooks />
+                    </PrivateRoute>
+                ),
             },
             {
                 path: '/register',

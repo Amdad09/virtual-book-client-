@@ -1,7 +1,14 @@
 import axios from 'axios';
-import React from 'react';
+import React, { use } from 'react';
+import { useLoaderData } from 'react-router';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const UpdateBook = () => {
+    const book = useLoaderData();
+    const { user } = use(AuthContext);
+
+    const { cover_photo, book_title, book_author, total_page, book_category, reading_status, book_overview } = book;
+
     const handleUpdateBook = async (e, id) => {
         e.preventDefault();
         const form = e.target;
@@ -12,12 +19,14 @@ const UpdateBook = () => {
         console.log(data);
 
         try {
-            await axios.put(`http://localhost:3000/books${id}`, data);
+            await axios.patch(`http://localhost:3000/books/${id}`, data);
             console.log('book updated');
         } catch (error) {
             console.log(error);
         }
     };
+
+    
     return (
         <div>
             <div className='text-center mt-12'>
@@ -28,7 +37,7 @@ const UpdateBook = () => {
             </div>
             
             <form
-                onSubmit={handleUpdateBook}
+                onSubmit={(e)=>handleUpdateBook(e, book._id)}
                 className="p-6 rounded-xl shadow-md space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
                     {/* Book Title */}
@@ -38,7 +47,7 @@ const UpdateBook = () => {
                         </label>
                         <input
                             type="text"
-                            defaultValue=''
+                            defaultValue={book_title}
                             name="book_title"
                             className="w-full border px-3 py-2 rounded-lg"
                             placeholder="Enter book title"
@@ -54,6 +63,7 @@ const UpdateBook = () => {
                         <input
                             type="text"
                             name="cover_photo"
+                            defaultValue={cover_photo}
                             className="w-full border px-3 py-2 rounded-lg"
                             placeholder="Enter image URL"
                         />
@@ -67,6 +77,7 @@ const UpdateBook = () => {
                         <input
                             type="number"
                             name="total_page"
+                            defaultValue={total_page}
                             className="w-full border px-3 py-2 rounded-lg"
                             placeholder="Enter total number of pages"
                         />
@@ -78,6 +89,7 @@ const UpdateBook = () => {
                         <input
                             type="text"
                             name="book_author"
+                            defaultValue={book_author}
                             className="w-full border px-3 py-2 rounded-lg"
                             placeholder="Enter author's name"
                         />
@@ -91,8 +103,8 @@ const UpdateBook = () => {
                         <input
                             type="email"
                             name="user_email"
+                            defaultValue={user?.email}
                             className="w-full border px-3 py-2 rounded-lg "
-                            value="user@example.com"
                             readOnly
                         />
                     </div>
@@ -106,7 +118,7 @@ const UpdateBook = () => {
                             type="text"
                             name="user_name"
                             className="w-full border px-3 py-2 rounded-lg "
-                            value="John Doe"
+                            defaultValue={user?.displayName}
                             readOnly
                         />
                     </div>
@@ -118,6 +130,7 @@ const UpdateBook = () => {
                         </label>
                         <select
                             name="book_category"
+                            defaultValue={book_category}
                             className="w-full border text-white px-3 py-2 rounded-lg">
                             <option value="">Select a category</option>
                             <option value="Fiction">Fiction</option>
@@ -133,6 +146,7 @@ const UpdateBook = () => {
                         </label>
                         <select
                             name="reading_status"
+                            defaultValue={reading_status}
                             className="w-full border px-3 py-2 rounded-lg">
                             <option value="">Select status</option>
                             <option value="Read">Read</option>
@@ -148,6 +162,7 @@ const UpdateBook = () => {
                     </label>
                     <textarea
                         name="book_overview"
+                        defaultValue={book_overview}
                         className="w-full border px-3 py-2 rounded-lg"
                         rows="4"
                         placeholder="Write a short overview of the book..."></textarea>
