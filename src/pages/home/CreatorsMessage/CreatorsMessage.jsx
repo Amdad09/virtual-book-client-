@@ -32,7 +32,7 @@ const CreatorsMessage = () => {
     const [activeMessage, setActiveMessage] = useState(messages[0]); // Default first message
 
     return (
-        <div className="bg-cyan-300 py-12 flex flex-col items-center">
+        <div className="bg-cyan-300 py-28 flex flex-col items-center">
             <div className="text-center max-w-xl bg-white p-4 rounded shadow mb-10">
                 <p className="text-gray-800 italic mb-2">
                     "{activeMessage.message}"

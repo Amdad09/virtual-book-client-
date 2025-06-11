@@ -1,2 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+.custom-modal-box {
+    width: 95vw !important;
+    max-width: 1000px !important;
+  }

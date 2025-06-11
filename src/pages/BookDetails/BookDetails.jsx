@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { use, useEffect, useState } from 'react';
 import {
     Link,
-    Navigate,
     useLoaderData,
     useLocation,
     useNavigate,
@@ -10,7 +9,7 @@ import {
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import PrivateRoute from '../../routes/PrivateRoute';
+import Loading from '../../shared/Loading';
 
 const BookDetails = () => {
     const book = useLoaderData();
@@ -23,7 +22,6 @@ const BookDetails = () => {
         cover_photo,
         total_page,
         reading_status,
-        user_name,
         user_email,
     } = book;
     const [reviews, setReviews] = useState([]);
@@ -103,13 +101,11 @@ const BookDetails = () => {
                 confirmButtonColor: '#2563eb',
             });
 
-            // ✅ সব রিভিউ আবার লোড করো
             const updated = await axios.get(
                 `http://localhost:3000/books/${id}/reviews`,
             );
             setReviews(updated.data);
 
-            // ✅ ফর্ম ক্লিয়ার করো
             e.target.reset();
         } catch (error) {
             console.log(error);
@@ -142,16 +138,13 @@ const BookDetails = () => {
                 text: 'Your review has been successfully updated.',
             });
 
-            // modal বন্ধ করো
             document.getElementById('my_modal_1').close();
 
-            // সব রিভিউ আবার লোড করো
             const res = await axios.get(
                 `http://localhost:3000/books/${_id}/reviews`,
             );
             setReviews(res.data);
 
-            // ক্লিয়ার স্টেট
             setEditingReviewId(null);
             setEditingText('');
         } catch (error) {
@@ -164,46 +157,45 @@ const BookDetails = () => {
         }
     };
 
-    const handleDelete = id => {
+    const handleDelete = (id) => {
         Swal.fire({
-            title: "Are you sure?",
+            title: 'Are you sure?',
             text: "You won't be able to revert this!",
-            icon: "warning",
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-              if (result.isConfirmed) {
-                  fetch(`http://localhost:3000/reviews/${id}`, {
-                      method:'DELETE'
-                  })
-                      .then(res=>res.json())
-                      .then(data => {
-                          console.log(data)
-                          Swal.fire({
-                              title: 'Deleted!',
-                              text: 'Your file has been deleted.',
-                              icon: 'success',
-                          });
-                          setReviews(prev => prev.filter(review => review._id !== id));
-                      })
-                      .catch(error => {
-                          console.log(error);
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Failed to Delete',
-                              text: 'Something went wrong!',
-                          });
-                  })
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:3000/reviews/${id}`, {
+                    method: 'DELETE',
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data);
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'Your file has been deleted.',
+                            icon: 'success',
+                        });
+                        setReviews((prev) =>
+                            prev.filter((review) => review._id !== id),
+                        );
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed to Delete',
+                            text: 'Something went wrong!',
+                        });
+                    });
+            }
+        });
+    };
 
-                  
-              }
-              });
-    }
-
-
-    if (!book) return <p className="text-center py-10">Loading...</p>;
+    if (!book) return <p className="text-center py-10"><Loading/></p>;
 
     return (
         <section className="max-w-4xl mx-auto p-6">
@@ -221,7 +213,7 @@ const BookDetails = () => {
                 />
                 <div className="p-6 flex flex-col justify-between">
                     <div>
-                        <h2 className="text-3xl font-bold mb-2">
+                        <h2 className="text-3xl text-gray-600 font-bold mb-2">
                             {book_title}
                         </h2>
                         <p className="text-sm text-gray-600 mb-1">
@@ -239,22 +231,39 @@ const BookDetails = () => {
                         </p>
                         <p className="text-gray-700 mt-4">{book_overview}</p>
                     </div>
-
-                    <Link to="">
-                        <motion.button
-                            whileTap={{ scale: 0.9 }}
-                            onClick={handleUpvote}
-                            className="mt-6 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
-                            🔼 Upvote ({upvotes})
-                        </motion.button>
-                    </Link>
+                    <div className='flex justify-between'>
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="btn btn-outline btn-warning mt-4">
+                            ⬅️ Go Back
+                        </button>
+                        <Link to="">
+                            {user?.email !== user_email ? (
+                                <motion.button
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={handleUpvote}
+                                    className="mt-6 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
+                                    🔼 Upvote ({upvotes})
+                                </motion.button>
+                            ) : (
+                                <div
+                                    class="tooltip"
+                                    data-tip="You cannot upvote your own book.">
+                                    <button
+                                        className="mt-1 px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
+                                        disabled>
+                                        🔼 Upvote ({upvotes})
+                                    </button>
+                                </div>
+                            )}
+                        </Link>
+                    </div>
                 </div>
             </div>
 
-            {/* User Info */}
-            <div className="mt-6 text-sm text-gray-700">
+            <div className="mt-6 text-sm text-gray-400">
                 <p>
-                    Added by: <strong>{user_name} hi </strong> ({user_email})
+                    Comment : <strong>{reviews.length} </strong>
                 </p>
             </div>
 
@@ -339,6 +348,9 @@ const BookDetails = () => {
                         className="w-full border rounded p-2"
                         name="review"
                         placeholder="Write your review..."></textarea>
+                    {/* {
+                        user?.email === user_email &&  
+                    } */}
                     <button
                         type="submit"
                         className="mt-2 px-4 py-2 bg-blue-600 text-white rounded">

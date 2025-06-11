@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { motion } from 'motion/react'; 
 const OnlineData = () => {
     return (
-        <div className="hero bg-base-200">
+        <div className="hero bg-base-200 py-20">
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <div className="flex-1">
                     <motion.img

@@ -1,8 +1,12 @@
 import axios from 'axios';
-import React from 'react';
+import React, { use } from 'react';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const AddBook = () => {
+    const { user } = use(AuthContext);
+    console.log(user);
+
     const handleAddBook =async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -33,13 +37,13 @@ const AddBook = () => {
     }
     return (
         <div>
-            <div className='text-center mt-12'>
+            <div className="text-center mt-12">
                 <h1 className="text-3xl font-bold mb-2">Add A New Book</h1>
                 <p className="text-gray-400 mb-6">
                     Fill out the form below to add a new book to your shelf.
                 </p>
             </div>
-           
+
             <form
                 onSubmit={handleAddBook}
                 className="p-6 rounded-xl shadow-md space-y-4">
@@ -51,7 +55,7 @@ const AddBook = () => {
                         </label>
                         <input
                             type="text"
-                            name="fbook_title"
+                            name="book_title"
                             className="w-full border px-3 py-2 rounded-lg"
                             placeholder="Enter book title"
                             required
@@ -104,7 +108,7 @@ const AddBook = () => {
                             type="email"
                             name="user_email"
                             className="w-full border px-3 py-2 rounded-lg "
-                            value="user@example.com"
+                            value={user?.email}
                             readOnly
                         />
                     </div>
@@ -118,7 +122,7 @@ const AddBook = () => {
                             type="text"
                             name="user_name"
                             className="w-full border px-3 py-2 rounded-lg "
-                            value="John Doe"
+                            value={user?.displayName}
                             readOnly
                         />
                     </div>
@@ -130,7 +134,7 @@ const AddBook = () => {
                         </label>
                         <select
                             name="book_category"
-                            className="w-full border text-white px-3 py-2 rounded-lg">
+                            className="w-full border px-3 py-2 rounded-lg">
                             <option value="">Select a category</option>
                             <option value="Fiction">Fiction</option>
                             <option value="Non-Fiction">Non-Fiction</option>
