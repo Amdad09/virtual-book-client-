@@ -1,5 +1,5 @@
 import { use, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 
 const categories = [
     {

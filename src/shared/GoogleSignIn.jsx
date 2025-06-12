@@ -1,14 +1,19 @@
 import React, { use } from 'react';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../contexts/AuthContext';
+import { useLocation, useNavigate } from 'react-router';
 
 const GoogleSignIn = () => {
     const { googleSignIn } = use(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location?.state?.from?.pathname || '/';
 
     const handleGoogleSignIn = () => {
         googleSignIn()
             .then((result) => {
                 console.log(result.user);
+                navigate(from, { replace: true });
                 Swal.fire({
                     title: 'Account Created!',
                     text: 'Your registration has been successful.',

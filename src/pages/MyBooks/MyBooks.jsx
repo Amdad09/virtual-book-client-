@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { use, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import MyBook from './MyBook';
+import { Link } from 'react-router';
 
 const MyBooks = () => {
     const { user } = use(AuthContext);
@@ -11,23 +12,51 @@ const MyBooks = () => {
         if (user?.email) {
             axios
                 .get(
-                    `http://localhost:3000/books/user?user_email=${user?.email}`,
+                    `https://virtual-bookshelf-server.vercel.app/books/user?user_email=${user?.email}`,
                 )
                 .then((res) => setBooks(res.data));
         }
     }, [user]);
 
+    const handleDelete = (id) => {
+        setBooks((preBooks) => preBooks.filter((book) => book.id !== id));
+    };
+
     return (
         <div>
-            <h2 className="text-2xl font-bold my-12">My Books</h2>
+            <h2 className="text-2xl text-center font-bold my-12">My Books</h2>
             {books.length === 0 ? (
-                <p>No books found.</p>
+                <div className="flex justify-center items-center pb-12">
+                    <div className="text-center p-10 border-2 border-dashed border-gray-300 shadow-xl rounded-xl bg-white max-w-xl">
+                        <h2 className="text-4xl font-bold text-gray-700 mb-4">
+                            📚 No Books Found
+                        </h2>
+                        <p className="text-lg text-gray-600">
+                            We flipped through all the pages, searched every
+                            shelf, and even checked under the table...
+                            <br />
+                            But sadly, we couldn't find any books matching your
+                            request.
+                        </p>
+                        <p className="text-gray-500 mt-4">
+                            Try changing your search term or explore other
+                            categories.
+                        </p>
+                        <div className="mt-6">
+                            <Link
+                                to="/addBook"
+                                className="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-5 rounded-full transition duration-300">
+                                Add Book
+                            </Link>
+                        </div>
+                    </div>
+                </div>
             ) : (
                 <div className="overflow-x-auto">
                     <table className="table">
                         {/* head */}
                         <thead>
-                                <tr>
+                            <tr>
                                 <th></th>
                                 <th>Image</th>
                                 <th>Name</th>
@@ -38,7 +67,11 @@ const MyBooks = () => {
                         </thead>
                         <tbody>
                             {books.map((book, index) => (
-                                <MyBook key={book._id} book={book} index={index}></MyBook>
+                                <MyBook
+                                    key={book._id}
+                                    book={book}
+                                    onDelete={handleDelete}
+                                    index={index}></MyBook>
                             ))}
                         </tbody>
                     </table>

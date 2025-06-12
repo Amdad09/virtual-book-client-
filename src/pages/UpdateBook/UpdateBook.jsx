@@ -7,7 +7,15 @@ const UpdateBook = () => {
     const book = useLoaderData();
     const { user } = use(AuthContext);
 
-    const { cover_photo, book_title, book_author, total_page, book_category, reading_status, book_overview } = book;
+    const {
+        cover_photo,
+        book_title,
+        book_author,
+        total_page,
+        book_category,
+        reading_status,
+        book_overview,
+    } = book;
 
     const handleUpdateBook = async (e, id) => {
         e.preventDefault();
@@ -19,25 +27,27 @@ const UpdateBook = () => {
         console.log(data);
 
         try {
-            await axios.patch(`http://localhost:3000/books/${id}`, data);
+            await axios.patch(
+                `https://virtual-bookshelf-server.vercel.app/books/${id}`,
+                data,
+            );
             console.log('book updated');
         } catch (error) {
             console.log(error);
         }
     };
 
-    
     return (
         <div>
-            <div className='text-center mt-12'>
+            <div className="text-center mt-12">
                 <h1 className="text-3xl font-bold mb-2">Update Book Details</h1>
                 <p className="text-gray-400 mb-6">
                     Edit the fields below to update the book information.
                 </p>
             </div>
-            
+
             <form
-                onSubmit={(e)=>handleUpdateBook(e, book._id)}
+                onSubmit={(e) => handleUpdateBook(e, book._id)}
                 className="p-6 rounded-xl shadow-md space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
                     {/* Book Title */}

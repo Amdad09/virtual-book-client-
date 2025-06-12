@@ -7,15 +7,13 @@ import CreatorsMessage from './CreatorsMessage/CreatorsMessage';
 import FavBooks from './FavBooks/FavBooks';
 
 const Home = () => {
-    const booksPromise = fetch('http://localhost:3000/books').then((res) =>
-        res.json(),
-    );
+    const booksPromise = fetch(
+        'https://virtual-bookshelf-server.vercel.app/books',
+    ).then((res) => res.json());
 
-    const favBooksPromise = fetch('http://localhost:3000/books/top').then((res) =>
-        res.json(),
-    );
-
-
+    const favBooksPromise = fetch(
+        'https://virtual-bookshelf-server.vercel.app/books/top',
+    ).then((res) => res.json());
 
     return (
         <div>

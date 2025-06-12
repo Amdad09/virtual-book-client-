@@ -2,12 +2,14 @@ import axios from 'axios';
 import React, { use } from 'react';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router';
 
 const AddBook = () => {
     const { user } = use(AuthContext);
     console.log(user);
+    const navigate = useNavigate();
 
-    const handleAddBook =async (e) => {
+    const handleAddBook = async (e) => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
@@ -15,17 +17,19 @@ const AddBook = () => {
         console.log(data);
 
         try {
-            await axios.post('http://localhost:3000/books', data);
+            await axios.post(
+                'https://virtual-bookshelf-server.vercel.app/books',
+                data,
+            );
             console.log('book added');
+            navigate('/myBooks');
             Swal.fire({
                 title: 'Success!',
                 text: 'Book added successfully!',
                 icon: 'success',
                 confirmButtonText: 'Cool',
             });
-
-        }
-        catch(error) {
+        } catch (error) {
             console.log(error);
             Swal.fire({
                 title: 'Error!',
@@ -34,7 +38,7 @@ const AddBook = () => {
                 confirmButtonText: 'OK',
             });
         }
-    }
+    };
     return (
         <div>
             <div className="text-center mt-12">
@@ -108,7 +112,7 @@ const AddBook = () => {
                             type="email"
                             name="user_email"
                             className="w-full border px-3 py-2 rounded-lg "
-                            value={user?.email}
+                            value={user?.email || ''}
                             readOnly
                         />
                     </div>
@@ -122,7 +126,7 @@ const AddBook = () => {
                             type="text"
                             name="user_name"
                             className="w-full border px-3 py-2 rounded-lg "
-                            value={user?.displayName}
+                            value={user?.displayName || ''}
                             readOnly
                         />
                     </div>

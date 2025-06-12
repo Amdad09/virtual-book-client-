@@ -1,18 +1,43 @@
 import axios from 'axios';
-import React from 'react';
 import { Link } from 'react-router';
+import Swal from 'sweetalert2';
 
-const MyBook = ({ book, index }) => {
+const MyBook = ({ book, index, onDelete }) => {
     const { _id, book_title, cover_photo, book_author, total_page } = book;
-    
     const handleDelete = async (id) => {
-        try {
-            await axios.delete(`http://localhost:3000/books/${id}`);
-            console.log('delete')
-        } catch (error) {
-            console.log(error);
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await axios.delete(
+                    `https://virtual-bookshelf-server.vercel.app/books/${id}`,
+                );
+                onDelete(id);
+
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'Your book has been deleted.',
+                    icon: 'success',
+                });
+            } catch (error) {
+                console.log(error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong.',
+                    icon: 'error',
+                });
+            }
         }
     };
+
     return (
         <tr>
             <td>{index + 1}</td>
@@ -42,7 +67,9 @@ const MyBook = ({ book, index }) => {
                     </button>
                 </Link>
 
-                <button onClick={()=>handleDelete(_id)} className="btn btn-ghost btn-xs bg-red-600">
+                <button
+                    onClick={() => handleDelete(_id)}
+                    className="btn btn-ghost btn-xs bg-red-600">
                     Delete
                 </button>
             </th>

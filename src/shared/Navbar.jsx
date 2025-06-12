@@ -35,9 +35,7 @@ const Navbar = () => {
             <li>
                 <NavLink to="/myBooks">My Books</NavLink>
             </li>
-            <li>
-                <NavLink to="/updateBook">Update Book</NavLink>
-            </li>
+           
             <li>
                 <NavLink to="/profile">Profile</NavLink>
             </li>
@@ -87,7 +85,7 @@ const Navbar = () => {
             <div className="navbar-end">
                 {user ? (
                     <>
-                        <span>{user?.email}</span>
+                        <img title={user?.displayName} src={user?.displayName} className='w-12 h-12 rounded-full mr-3' alt={user?.displayName} />
                         <button
                             onClick={handleLogOut}
                             className="btn drop-shadow-md bg-amber-600 hover:bg-amber-700 btn-neutral mr-3">

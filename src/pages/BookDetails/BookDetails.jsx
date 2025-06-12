@@ -1,11 +1,6 @@
 import { motion } from 'framer-motion';
 import { use, useEffect, useState } from 'react';
-import {
-    Link,
-    useLoaderData,
-    useLocation,
-    useNavigate,
-} from 'react-router';
+import { Link, useLoaderData, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -54,7 +49,9 @@ const BookDetails = () => {
         // }
 
         try {
-            await axios.patch(`http://localhost:3000/books/${_id}/upvote`);
+            await axios.patch(
+                `https://virtual-bookshelf-server.vercel.app/books/${_id}/upvote`,
+            );
             setUpvotes((prev) => prev + 1);
         } catch {
             Swal.fire({
@@ -90,7 +87,7 @@ const BookDetails = () => {
             };
 
             await axios.post(
-                `http://localhost:3000/books/${id}/reviews`,
+                `https://virtual-bookshelf-server.vercel.app/books/${id}/reviews`,
                 reviewPayload,
             );
 
@@ -102,7 +99,7 @@ const BookDetails = () => {
             });
 
             const updated = await axios.get(
-                `http://localhost:3000/books/${id}/reviews`,
+                `https://virtual-bookshelf-server.vercel.app/books/${id}/reviews`,
             );
             setReviews(updated.data);
 
@@ -120,7 +117,9 @@ const BookDetails = () => {
     // read review
     useEffect(() => {
         axios
-            .get(`http://localhost:3000/books/${_id}/reviews`)
+            .get(
+                `https://virtual-bookshelf-server.vercel.app/books/${_id}/reviews`,
+            )
             .then((res) => setReviews(res.data))
             .catch((error) => console.log(error));
     }, [_id]);
@@ -128,10 +127,13 @@ const BookDetails = () => {
     // review update
     const handleEdit = async (id, updateText) => {
         try {
-            await axios.put(`http://localhost:3000/books/${id}/reviews`, {
-                review_text: updateText,
-                created_at: new Date(),
-            });
+            await axios.put(
+                `https://virtual-bookshelf-server.vercel.app/books/${id}/reviews`,
+                {
+                    review_text: updateText,
+                    created_at: new Date(),
+                },
+            );
             Swal.fire({
                 icon: 'success',
                 title: 'Review Updated!',
@@ -141,7 +143,7 @@ const BookDetails = () => {
             document.getElementById('my_modal_1').close();
 
             const res = await axios.get(
-                `http://localhost:3000/books/${_id}/reviews`,
+                `https://virtual-bookshelf-server.vercel.app/books/${_id}/reviews`,
             );
             setReviews(res.data);
 
@@ -168,9 +170,12 @@ const BookDetails = () => {
             confirmButtonText: 'Yes, delete it!',
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/reviews/${id}`, {
-                    method: 'DELETE',
-                })
+                fetch(
+                    `https://virtual-bookshelf-server.vercel.app/reviews/${id}`,
+                    {
+                        method: 'DELETE',
+                    },
+                )
                     .then((res) => res.json())
                     .then((data) => {
                         console.log(data);
@@ -195,7 +200,12 @@ const BookDetails = () => {
         });
     };
 
-    if (!book) return <p className="text-center py-10"><Loading/></p>;
+    if (!book)
+        return (
+            <p className="text-center py-10">
+                <Loading />
+            </p>
+        );
 
     return (
         <section className="max-w-4xl mx-auto p-6">
@@ -231,7 +241,7 @@ const BookDetails = () => {
                         </p>
                         <p className="text-gray-700 mt-4">{book_overview}</p>
                     </div>
-                    <div className='flex justify-between'>
+                    <div className="flex justify-between">
                         <button
                             onClick={() => navigate(-1)}
                             className="btn btn-outline btn-warning mt-4">
