@@ -3,8 +3,8 @@ import { Link } from 'react-router';
 
 const Footer = () => {
     return (
-        <div>
-            <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content grid-rows-2 p-10">
+        <div className="bg-base-200">
+            <footer className="footer grid-cols-2 md:grid-cols-3  p-10">
                 <nav>
                     <h6 className="footer-title">Services</h6>
                     <a className="link link-hover">Branding</a>
@@ -47,8 +47,8 @@ const Footer = () => {
                     <a className="link link-hover">Android</a>
                 </nav>
             </footer>
-            <footer className="footer footer-horizontal footer-center bg-base-200 text-base-content rounded p-10">
-                <Link to='/' className="flex gap-3">
+            <footer className="footer footer-horizontal footer-center text-base-content rounded p-10">
+                <Link to="/" className="flex gap-3">
                     <img
                         className="w-10 h-10 rounded-full"
                         src="logo.png"

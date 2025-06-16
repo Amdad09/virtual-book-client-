@@ -27,10 +27,7 @@ const UpdateBook = () => {
         console.log(data);
 
         try {
-            await axios.patch(
-                `https://virtual-bookshelf-server.vercel.app/books/${id}`,
-                data,
-            );
+            await axios.patch(`http://localhost:3000/books/${id}`, data);
             console.log('book updated');
         } catch (error) {
             console.log(error);

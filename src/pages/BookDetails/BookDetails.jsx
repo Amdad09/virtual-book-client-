@@ -49,9 +49,7 @@ const BookDetails = () => {
         // }
 
         try {
-            await axios.patch(
-                `https://virtual-bookshelf-server.vercel.app/books/${_id}/upvote`,
-            );
+            await axios.patch(`http://localhost:3000/books/${_id}/upvote`);
             setUpvotes((prev) => prev + 1);
         } catch {
             Swal.fire({
@@ -87,7 +85,7 @@ const BookDetails = () => {
             };
 
             await axios.post(
-                `https://virtual-bookshelf-server.vercel.app/books/${id}/reviews`,
+                `http://localhost:3000/books/${id}/reviews`,
                 reviewPayload,
             );
 
@@ -99,7 +97,7 @@ const BookDetails = () => {
             });
 
             const updated = await axios.get(
-                `https://virtual-bookshelf-server.vercel.app/books/${id}/reviews`,
+                `http://localhost:3000/books/${id}/reviews`,
             );
             setReviews(updated.data);
 
@@ -117,9 +115,7 @@ const BookDetails = () => {
     // read review
     useEffect(() => {
         axios
-            .get(
-                `https://virtual-bookshelf-server.vercel.app/books/${_id}/reviews`,
-            )
+            .get(`http://localhost:3000/books/${_id}/reviews`)
             .then((res) => setReviews(res.data))
             .catch((error) => console.log(error));
     }, [_id]);
@@ -127,13 +123,10 @@ const BookDetails = () => {
     // review update
     const handleEdit = async (id, updateText) => {
         try {
-            await axios.put(
-                `https://virtual-bookshelf-server.vercel.app/books/${id}/reviews`,
-                {
-                    review_text: updateText,
-                    created_at: new Date(),
-                },
-            );
+            await axios.put(`http://localhost:3000/books/${id}/reviews`, {
+                review_text: updateText,
+                created_at: new Date(),
+            });
             Swal.fire({
                 icon: 'success',
                 title: 'Review Updated!',
@@ -143,7 +136,7 @@ const BookDetails = () => {
             document.getElementById('my_modal_1').close();
 
             const res = await axios.get(
-                `https://virtual-bookshelf-server.vercel.app/books/${_id}/reviews`,
+                `http://localhost:3000/books/${_id}/reviews`,
             );
             setReviews(res.data);
 
@@ -170,12 +163,9 @@ const BookDetails = () => {
             confirmButtonText: 'Yes, delete it!',
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(
-                    `https://virtual-bookshelf-server.vercel.app/reviews/${id}`,
-                    {
-                        method: 'DELETE',
-                    },
-                )
+                fetch(`http://localhost:3000/reviews/${id}`, {
+                    method: 'DELETE',
+                })
                     .then((res) => res.json())
                     .then((data) => {
                         console.log(data);

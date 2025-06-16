@@ -4,11 +4,10 @@ import FavBook from './FavBook';
 
 const FavBooks = ({ favBooksPromise }) => {
     const books = use(favBooksPromise);
-    console.log(books);
 
     
     return (
-        <div>
+        <div className='w-11/12 mx-auto'>
             <div className="my-20 text-center">
                 <h2 className="text-4xl font-extrabold text-center  mb-4">
                     Top 6 Books You Can't Miss

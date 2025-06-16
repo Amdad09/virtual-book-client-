@@ -4,6 +4,7 @@ import BookCard from './BookCard';
 
 const BookShelf = () => {
     const books = useLoaderData();
+    console.log(books);
     return (
         <div className="w-11/12 mx-auto">
             <div className='my-12'>

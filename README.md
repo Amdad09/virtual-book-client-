@@ -1,12 +1,63 @@
-# React + Vite
+# 📚 Virtual Bookshelf - Assignment 11
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive web app for book lovers to manage their reading journey. Users can add books, track reading status, write reviews, and explore community favorites — all in one virtual shelf.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Live Website
 
-## Expanding the ESLint configuration
+🔗 [Visit Live Site](https://virtual-bookshelf-f0867.web.app/)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🎯 Project Purpose
+
+This project was built as part of **Assignment 11 (assignment_category_19)** to evaluate full-stack development skills including:
+- React development with routing and state management
+- Firebase authentication
+- Backend API creation and data handling with MongoDB
+- Clean UI/UX based on design inspiration
+- JWT-based private route protection
+
+It solves the problem of scattered reading lists by offering a clean, centralized, and interactive way to track reading.
+
+---
+
+## 🚀 Key Features
+
+- 📌 Add books with category, author, pages, and overview.
+- ✍️ Post, edit & delete book reviews (1 per user per book).
+- 📈 Upvote books from other users (no self-upvotes).
+- 🔒 Protected routes: Add Book, My Books, Profile
+- 🔍 Search and filter by reading status / author / title
+- 📊 Profile summary with pie chart of reading categories
+- 🔁 Reading progress tracker: "Want to Read" → "Reading" → "Read"
+- 📸 Responsive, modern UI inspired by Goodreads & Dribbble
+- 🔐 JWT-based secure access control with Firebase Auth
+
+---
+
+## 🛠️ Tech Stack
+
+### 🖥️ Frontend:
+- React
+- Tailwind CSS
+- React Router DOM
+- Framer Motion
+- React Toastify / SweetAlert2
+- Firebase Authentication
+
+### 🗄️ Backend:
+- Node.js
+- Express
+- MongoDB (with Mongoose)
+- JWT (jsonwebtoken)
+- CORS, dotenv
+
+---
+
+## 📦 NPM Packages Used
+
+```bash
+npm install react-router framer-motion firebase axios react-toastify
+npm install express mongodb cors dotenv 

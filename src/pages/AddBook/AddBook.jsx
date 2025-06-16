@@ -1,11 +1,13 @@
-import axios from 'axios';
+
 import React, { use } from 'react';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const AddBook = () => {
     const { user } = use(AuthContext);
+    const axiosSecure = useAxiosSecure();
     console.log(user);
     const navigate = useNavigate();
 
@@ -17,10 +19,7 @@ const AddBook = () => {
         console.log(data);
 
         try {
-            await axios.post(
-                'https://virtual-bookshelf-server.vercel.app/books',
-                data,
-            );
+            await axiosSecure.post('http://localhost:3000/books', data);
             console.log('book added');
             navigate('/myBooks');
             Swal.fire({

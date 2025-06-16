@@ -1,8 +1,10 @@
-import axios from 'axios';
+
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const MyBook = ({ book, index, onDelete }) => {
+    const axiosSecure = useAxiosSecure();
     const { _id, book_title, cover_photo, book_author, total_page } = book;
     const handleDelete = async (id) => {
         const result = await Swal.fire({
@@ -17,9 +19,7 @@ const MyBook = ({ book, index, onDelete }) => {
 
         if (result.isConfirmed) {
             try {
-                await axios.delete(
-                    `https://virtual-bookshelf-server.vercel.app/books/${id}`,
-                );
+                await axiosSecure.delete(`http://localhost:3000/books/${id}`);
                 onDelete(id);
 
                 Swal.fire({

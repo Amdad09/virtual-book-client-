@@ -1,25 +1,26 @@
-import axios from 'axios';
+
 import React, { use, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import MyBook from './MyBook';
 import { Link } from 'react-router';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const MyBooks = () => {
     const { user } = use(AuthContext);
+    const axiosSecure = useAxiosSecure();
     const [books, setBooks] = useState([]);
 
     useEffect(() => {
         if (user?.email) {
-            axios
-                .get(
-                    `https://virtual-bookshelf-server.vercel.app/books/user?user_email=${user?.email}`,
-                )
+            axiosSecure
+                .get(`/books/user?user_email=${user?.email}`)
                 .then((res) => setBooks(res.data));
         }
-    }, [user]);
+       
+    }, [axiosSecure, user?.email]);
 
     const handleDelete = (id) => {
-        setBooks((preBooks) => preBooks.filter((book) => book.id !== id));
+        setBooks((preBooks) => preBooks.filter((book) => book._id !== id));
     };
 
     return (

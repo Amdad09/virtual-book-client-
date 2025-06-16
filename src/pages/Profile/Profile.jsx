@@ -1,22 +1,24 @@
 import React, { use, useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
-import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const Profile = () => {
     const { user } = use(AuthContext);
     const [books, setBooks] = useState([]);
+    console.log(books);
+    const axiosSecure = useAxiosSecure();
 
     useEffect(() => {
-        // Assuming books are fetched based on user email
-        axios
-            .get(
-                `https://virtual-bookshelf-server.vercel.app/books?email=${user.email}`,
-            )
-            .then((res) => setBooks(res.data));
-    }, [user.email]);
+        if (user?.email) {
+            axiosSecure
+                .get(`/books/user?user_email=${user.email}`)
+                .then((res) => setBooks(res.data))
+        }
+        
+    }, [axiosSecure, user.email]);
 
     // Group books by category
     const categoryData = [];
@@ -37,17 +39,17 @@ const Profile = () => {
     }
 
     return (
-        <div className="p-6 max-w-4xl mx-auto">
+        <div className=" max-w-4xl mx-auto">
             {/* User Info */}
-            <div className="flex items-center gap-4 mb-8 bg-gray-100 p-4 rounded-lg shadow">
+            <div className="flex flex-col items-center gap-4 mb-8 bg-gray-100 p-4 rounded-lg shadow">
                 <img
                     src={user.photoURL}
                     alt="Profile"
-                    className="w-16 h-16 rounded-full"
+                    className="w-96 h-96"
                 />
                 <div>
-                    <h2 className="text-xl font-semibold">{user.name}</h2>
-                    <p className="text-gray-600">{user.email}</p>
+                    <h2 className="text-xl text-gray-600 font-semibold">Name: {user.displayName}</h2>
+                    <p className="text-gray-600">E-mail: {user.email}</p>
                 </div>
             </div>
 
