@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-
+import logo from '../assets/logo.png';
 const Footer = () => {
     return (
         <div className="bg-base-200">
@@ -51,8 +51,8 @@ const Footer = () => {
                 <Link to="/" className="flex gap-3">
                     <img
                         className="w-10 h-10 rounded-full"
-                        src="logo.png"
-                        alt=""
+                        src={logo}
+                        alt="logo"
                     />
                     <h2 className="text-2xl font-semibold">Book Hut</h2>
                 </Link>

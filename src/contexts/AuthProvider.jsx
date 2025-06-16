@@ -48,20 +48,7 @@ const AuthProvider = ({ children }) => {
             setUser(currentUser);
             console.log('User in the auth state change', currentUser);
             setLoading(false);
-            // if (currentUser?.email) {
-            //     const userData = { email: currentUser.email };
-            //     axios.post('http://localhost:3000/jwt', userData, {
-            //         withCredentials: true
-            //     })
-            //         .then(res => {
-            //             console.log(res.data);
-            //             // const token = res.data.token;
-            //             // localStorage.setItem('token', token);
-            //         })
-            //         .catch(error => {
-            //             console.log(error);
-            //     })
-            // }
+            
         });
         return () => {
             unSubscribe();

@@ -8,7 +8,6 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 const AddBook = () => {
     const { user } = use(AuthContext);
     const axiosSecure = useAxiosSecure();
-    console.log(user);
     const navigate = useNavigate();
 
     const handleAddBook = async (e) => {
@@ -16,10 +15,9 @@ const AddBook = () => {
         const form = e.target;
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        console.log(data);
 
         try {
-            await axiosSecure.post('http://localhost:3000/books', data);
+            await axiosSecure.post('/books', data);
             console.log('book added');
             navigate('/myBooks');
             Swal.fire({
@@ -137,12 +135,13 @@ const AddBook = () => {
                         </label>
                         <select
                             name="book_category"
-                            className="w-full border px-3 py-2 rounded-lg">
+                            className="select border px-3 py-2 w-full rounded-lg">
                             <option value="">Select a category</option>
                             <option value="Fiction">Fiction</option>
                             <option value="Non-Fiction">Non-Fiction</option>
                             <option value="Fantasy">Fantasy</option>
                         </select>
+                        
                     </div>
 
                     {/* Reading Status Dropdown */}
@@ -152,7 +151,7 @@ const AddBook = () => {
                         </label>
                         <select
                             name="reading_status"
-                            className="w-full border px-3 py-2 rounded-lg">
+                            className="select w-full border px-3 py-2 rounded-lg">
                             <option value="">Select status</option>
                             <option value="Read">Read</option>
                             <option value="Reading">Reading</option>

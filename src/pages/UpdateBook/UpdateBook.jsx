@@ -138,7 +138,7 @@ const UpdateBook = () => {
                         <select
                             name="book_category"
                             defaultValue={book_category}
-                            className="w-full border text-white px-3 py-2 rounded-lg">
+                            className="select border px-3 py-2 w-full rounded-lg">
                             <option value="">Select a category</option>
                             <option value="Fiction">Fiction</option>
                             <option value="Non-Fiction">Non-Fiction</option>
@@ -154,7 +154,7 @@ const UpdateBook = () => {
                         <select
                             name="reading_status"
                             defaultValue={reading_status}
-                            className="w-full border px-3 py-2 rounded-lg">
+                            className="w-full select border px-3 py-2 rounded-lg">
                             <option value="">Select status</option>
                             <option value="Read">Read</option>
                             <option value="Reading">Reading</option>

@@ -1,12 +1,14 @@
 import Lottie from 'lottie-react';
-import React, { use } from 'react';
+import React, { use, useState } from 'react';
 import login from '../../assets/lottie/login.json'
 import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext';
 import Swal from 'sweetalert2';
 import GoogleSignIn from '../../shared/GoogleSignIn';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 const LogIn = () => {
     const { loginUser } = use(AuthContext);
+    const [isShow, setIsShow] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const from = location.state || '/';
@@ -59,7 +61,9 @@ const LogIn = () => {
                         <h1 className="text-xl font-bold">log In </h1>
                         <h3>
                             New here?{' '}
-                            <Link to='/register' className="text-amber-500 underline font-semibold">
+                            <Link
+                                to="/register"
+                                className="text-amber-500 underline font-semibold">
                                 Create a vitalSourse account
                             </Link>
                         </h3>
@@ -67,18 +71,30 @@ const LogIn = () => {
                             <label className="label">Email</label>
                             <input
                                 type="email"
-                                name='email'
+                                name="email"
                                 required
                                 className="input w-full"
                                 placeholder="Email"
                             />
                             <label className="label">Password</label>
-                            <input
-                                type="password"
-                                name='password'
-                                className="input w-full"
-                                placeholder="Password"
-                            />
+                            <div className="relative">
+                                <input
+                                    type={isShow ? 'text' : 'password'}
+                                    name="password"
+                                    className="input w-full"
+                                    placeholder="Password"
+                                    required
+                                />
+                                <button
+                                    onClick={() => setIsShow(!isShow)}
+                                    className="right-12 top-3 absolute z-30 cursor-pointer">
+                                    {isShow ? (
+                                        <FaEyeSlash size={18} />
+                                    ) : (
+                                        <FaEye size={18} />
+                                    )}
+                                </button>
+                            </div>
                             <div className="text-right">
                                 <a className="link link-hover text-amber-500 underline font-semibold">
                                     Forgot password?
@@ -88,7 +104,7 @@ const LogIn = () => {
                                 Login
                             </button>
                         </form>
-                        <GoogleSignIn/>
+                        <GoogleSignIn />
                     </div>
                 </div>
             </div>

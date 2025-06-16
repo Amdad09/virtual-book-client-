@@ -3,7 +3,15 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router';
 
 const BookCard = ({ book }) => {
-    const { _id,book_title, cover_photo, book_overview } = book;
+    const {
+        _id,
+        book_title,
+        cover_photo,
+        book_overview,
+        book_author,
+        book_category,
+        upvotes,
+    } = book;
 
     return (
         <motion.div
@@ -28,8 +36,21 @@ const BookCard = ({ book }) => {
                 <p className="text-gray-600 text-sm">
                     {book_overview?.slice(0, 100)}...
                 </p>
+                <p className="text-gray-600">
+                    <span className="font-semibold">Author: </span> {book_author}
+                </p>
+                <p className="text-gray-600">
+                    <span className="font-semibold">Category: </span>
+                     {book_category}
+                </p>
+                <p className="text-gray-600">
+                    <span className="font-semibold">Upvotes: </span>
+                     {upvotes}
+                </p>
 
-                <Link to={`/bookDetails/${_id}`} className="flex justify-center">
+                <Link
+                    to={`/bookDetails/${_id}`}
+                    className="flex justify-center">
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}

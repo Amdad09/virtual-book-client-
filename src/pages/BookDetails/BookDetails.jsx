@@ -5,8 +5,10 @@ import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Loading from '../../shared/Loading';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const BookDetails = () => {
+    const axiosSecure = useAxiosSecure();
     const book = useLoaderData();
     const {
         _id,
@@ -22,6 +24,9 @@ const BookDetails = () => {
     const [reviews, setReviews] = useState([]);
     const [editingReviewId, setEditingReviewId] = useState(null);
     const [editingText, setEditingText] = useState('');
+    const [readingStatus, setReadingStatus] = useState(
+        book.reading_status || 'Want-to-Read',
+    );
 
     const { user } = use(AuthContext);
     const location = useLocation();
@@ -29,6 +34,7 @@ const BookDetails = () => {
     const from = location.pathname || '/';
 
     const [upvotes, setUpvotes] = useState(book.upvotes || 0);
+    const ownerUser = user?.email === book.user_email;
 
     const handleUpvote = async () => {
         if (!user) {
@@ -43,13 +49,8 @@ const BookDetails = () => {
             return;
         }
 
-        // ower user
-        // if (user === book) {
-        //     ''
-        // }
-
         try {
-            await axios.patch(`http://localhost:3000/books/${_id}/upvote`);
+            await axiosSecure.patch(`http://localhost:3000/books/${_id}/upvote`);
             setUpvotes((prev) => prev + 1);
         } catch {
             Swal.fire({
@@ -60,7 +61,7 @@ const BookDetails = () => {
         }
     };
 
-    const handlePostReview = async (e, id) => {
+    const handlePostReview = async (e, bookId) => {
         e.preventDefault();
         const reviewText = e.target.review.value;
 
@@ -77,41 +78,34 @@ const BookDetails = () => {
         }
 
         try {
-            const reviewPayload = {
+            await axiosSecure.post(`/books/${bookId}/reviews`, {
                 review_text: reviewText,
-                user_email: user?.email,
-                book_id: id,
-                created_at: new Date(),
-            };
-
-            await axios.post(
-                `http://localhost:3000/books/${id}/reviews`,
-                reviewPayload,
-            );
+            });
 
             Swal.fire({
                 icon: 'success',
                 title: 'Review Added!',
                 text: 'Thanks for your feedback!',
-                confirmButtonColor: '#2563eb',
             });
 
-            const updated = await axios.get(
-                `http://localhost:3000/books/${id}/reviews`,
-            );
+            // Reload updated reviews
+            const updated = await axiosSecure.get(`/books/${bookId}/reviews`);
             setReviews(updated.data);
 
             e.target.reset();
         } catch (error) {
             console.log(error);
+            const msg =
+                error?.response?.data?.message ||
+                'Could not post review. Please try again.';
             Swal.fire({
                 icon: 'error',
                 title: 'Failed!',
-                text: 'Could not post review. Please try again.',
+                text: msg,
             });
         }
     };
-
+    
     // read review
     useEffect(() => {
         axios
@@ -121,38 +115,34 @@ const BookDetails = () => {
     }, [_id]);
 
     // review update
-    const handleEdit = async (id, updateText) => {
+    const handleEdit = async (reviewId, newText) => {
         try {
-            await axios.put(`http://localhost:3000/books/${id}/reviews`, {
-                review_text: updateText,
-                created_at: new Date(),
+            await axiosSecure.put(`/reviews/${reviewId}`, {
+                review_text: newText,
             });
+
             Swal.fire({
                 icon: 'success',
                 title: 'Review Updated!',
-                text: 'Your review has been successfully updated.',
             });
 
             document.getElementById('my_modal_1').close();
-
-            const res = await axios.get(
-                `http://localhost:3000/books/${_id}/reviews`,
-            );
-            setReviews(res.data);
-
-            setEditingReviewId(null);
-            setEditingText('');
+            
+            // Refresh list
+            const updated = await axiosSecure.get(`/books/${_id}/reviews`);
+            setReviews(updated.data);
         } catch (error) {
-            console.log(error);
+            console.error(error);
             Swal.fire({
                 icon: 'error',
-                title: 'Failed to Update',
-                text: 'Something went wrong. Please try again.',
+                title: 'Update Failed',
+                text: error?.response?.data?.message || 'Try again.',
             });
         }
     };
+    
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -161,41 +151,55 @@ const BookDetails = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!',
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/reviews/${id}`, {
-                    method: 'DELETE',
-                })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        console.log(data);
-                        Swal.fire({
-                            title: 'Deleted!',
-                            text: 'Your file has been deleted.',
-                            icon: 'success',
-                        });
-                        setReviews((prev) =>
-                            prev.filter((review) => review._id !== id),
-                        );
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Failed to Delete',
-                            text: 'Something went wrong!',
-                        });
+                try {
+                    await axiosSecure.delete(`/reviews/${id}`);
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Your review has been deleted.',
+                        'success',
+                    );
+
+                    setReviews((prev) =>
+                        prev.filter((review) => review._id !== id),
+                    );
+                } catch (error) {
+                    console.error(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Delete Failed',
+                        text: error?.response?.data?.message || 'Try again.',
                     });
+                }
             }
         });
     };
+    
 
-    if (!book)
-        return (
-            <p className="text-center py-10">
-                <Loading />
-            </p>
-        );
+    // if (!book)
+    //     return (
+    //         <p className="text-center py-10">
+    //             <Loading />
+    //         </p>
+    //     );
+    
+        const handleStatusChange = async (e) => {
+            const newStatus = e.target.value;
+
+            setReadingStatus(newStatus);
+
+            try {
+                await axiosSecure.patch(`/books/${_id}/reading-status`, {
+                    reading_status: newStatus,
+                });
+
+            } catch (error) {
+                console.error('Failed to update status:', error);
+            }
+        };
+          
 
     return (
         <section className="max-w-4xl mx-auto p-6">
@@ -230,33 +234,63 @@ const BookDetails = () => {
                             Status: {reading_status}
                         </p>
                         <p className="text-gray-700 mt-4">{book_overview}</p>
+                        {user?.email === book.user_email && (
+                            <div className="mt-4">
+                                <label className="block text-sm text-gray-600 font-medium mb-1">
+                                    Update Reading Status:
+                                </label>
+                                <select
+                                    value={readingStatus}
+                                    onChange={handleStatusChange}
+                                    className="select select-bordered w-full max-w-xs">
+                                    <option value="Want-to-Read">
+                                        Want-to-Read
+                                    </option>
+                                    <option value="Reading">Reading</option>
+                                    <option value="Read">Read</option>
+                                </select>
+                            </div>
+                        )}
                     </div>
-                    <div className="flex justify-between">
+
+                    <div className="flex justify-between items-center">
                         <button
                             onClick={() => navigate(-1)}
                             className="btn btn-outline btn-warning mt-4">
                             ⬅️ Go Back
                         </button>
-                        <Link to="">
-                            {user?.email !== user_email ? (
-                                <motion.button
-                                    whileTap={{ scale: 0.9 }}
-                                    onClick={handleUpvote}
-                                    className="mt-6 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
-                                    🔼 Upvote ({upvotes})
-                                </motion.button>
-                            ) : (
-                                <div
-                                    class="tooltip"
-                                    data-tip="You cannot upvote your own book.">
-                                    <button
-                                        className="mt-1 px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
-                                        disabled>
+                        <div>
+                            {user ? (
+                                
+                                    user?.email !== user_email ? (
+                                    <motion.button
+                                        whileTap={{ scale: 0.9 }}
+                                        onClick={handleUpvote}
+                                        className="mt-6 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
                                         🔼 Upvote ({upvotes})
-                                    </button>
-                                </div>
+                                    </motion.button>
+                                    ) : 
+                                    <div
+                                        className="tooltip"
+                                        data-tip="You cannot upvote your own book.">
+                                        <button
+                                            className="mt-1 px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
+                                            disabled>
+                                            🔼 Upvote ({upvotes})
+                                        </button>
+                                    </div>
+                                    
+                               
+                            ) : (
+                                <Link to="/logIn">
+                                    <motion.button
+                                        whileTap={{ scale: 0.9 }}
+                                        className="mt-6 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
+                                        🔼 Upvote ({upvotes})
+                                    </motion.button>
+                                </Link>
                             )}
-                        </Link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -270,93 +304,132 @@ const BookDetails = () => {
             {/* Review Section */}
             <div className="mt-10">
                 <h3 className="text-2xl font-bold mb-4">💬 Reviews</h3>
-                Show all reviews here :{/* Review List */}
+
+                {/* Show All Reviews */}
                 {reviews.length === 0 ? (
                     <p className="text-gray-400 italic">No reviews yet.</p>
                 ) : (
-                    reviews.map((review, idx) => (
+                    reviews.map((review) => (
                         <div
-                            key={idx}
+                            key={review._id}
                             className="border rounded text-white p-4 mb-3 bg-gray-800">
                             <p>{review.review_text}</p>
                             <div className="flex justify-between text-sm mt-2 text-gray-400">
                                 <span>{review.user_email}</span>
-                                <div>
-                                    {/* Open the modal using document.getElementById('ID').showModal() method */}
-                                    <button
-                                        className="btn"
-                                        onClick={() => {
-                                            setEditingReviewId(review._id);
-                                            setEditingText(review.review_text);
-                                            document
-                                                .getElementById('my_modal_1')
-                                                .showModal();
-                                        }}>
-                                        Edit
-                                    </button>
-                                    <dialog id="my_modal_1" className="modal">
-                                        <div className="modal-box">
-                                            <h3 className="font-bold text-lg mb-2">
-                                                ✏️ Edit Review
-                                            </h3>
-
-                                            <textarea
-                                                className="w-full border p-2 rounded"
-                                                value={editingText}
-                                                onChange={(e) =>
-                                                    setEditingText(
-                                                        e.target.value,
+                                {user?.email === review.user_email && (
+                                    <div>
+                                        {/* Edit Button */}
+                                        <button
+                                            className="btn"
+                                            onClick={() => {
+                                                setEditingReviewId(review._id);
+                                                setEditingText(
+                                                    review.review_text,
+                                                );
+                                                document
+                                                    .getElementById(
+                                                        'my_modal_1',
                                                     )
-                                                }
-                                            />
+                                                    .showModal();
+                                            }}>
+                                            Edit
+                                        </button>
 
-                                            <div className="modal-action flex justify-between">
-                                                <form method="dialog">
-                                                    <button className="btn">
-                                                        Close
-                                                    </button>
-                                                </form>
-                                                <button
-                                                    className="btn btn-primary"
-                                                    onClick={() =>
-                                                        handleEdit(
-                                                            editingReviewId,
-                                                            editingText,
+                                        {/* Edit Modal */}
+                                        <dialog
+                                            id="my_modal_1"
+                                            className="modal">
+                                            <div className="modal-box">
+                                                <h3 className="font-bold text-lg mb-2">
+                                                    ✏️ Edit Review
+                                                </h3>
+                                                <textarea
+                                                    className="w-full border p-2 rounded"
+                                                    value={editingText}
+                                                    onChange={(e) =>
+                                                        setEditingText(
+                                                            e.target.value,
                                                         )
-                                                    }>
-                                                    Save
-                                                </button>
+                                                    }
+                                                />
+                                                <div className="modal-action flex justify-between">
+                                                    <form method="dialog">
+                                                        <button className="btn">
+                                                            Close
+                                                        </button>
+                                                    </form>
+                                                    <button
+                                                        className="btn btn-primary"
+                                                        onClick={() =>
+                                                            handleEdit(
+                                                                editingReviewId,
+                                                                editingText,
+                                                            )
+                                                        }>
+                                                        Save
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </dialog>
+                                        </dialog>
 
-                                    <button
-                                        onClick={() => handleDelete(review._id)}
-                                        className="ml-2 btn text-red-500">
-                                        Delete
-                                    </button>
-                                </div>
+                                        {/* Delete Button */}
+                                        <button
+                                            onClick={() =>
+                                                handleDelete(review._id)
+                                            }
+                                            className="ml-2 btn text-red-500">
+                                            Delete
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))
                 )}
-                Authenticated users can post review :
-                <form
-                    onSubmit={(e) => handlePostReview(e, _id)}
-                    className="mt-4">
-                    <textarea
-                        className="w-full border rounded p-2"
-                        name="review"
-                        placeholder="Write your review..."></textarea>
-                    {/* {
-                        user?.email === user_email &&  
-                    } */}
-                    <button
-                        type="submit"
-                        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded">
-                        Post Review
-                    </button>
-                </form>
+
+                {/* --- Add New Review Section --- */}
+                {user ? (
+                    reviews.some((rev) => rev.user_email === user.email) ? (
+                        <p className="mt-4 text-gray-400 italic">
+                            You have already reviewed this book.
+                        </p>
+                    ) : (
+                        <form
+                            onSubmit={(e) => handlePostReview(e, _id)}
+                            className="mt-4">
+                            <textarea
+                                className="w-full border rounded p-2"
+                                name="review"
+                                placeholder="Write your review..."
+                                required></textarea>
+                            {ownerUser ? (
+                                <div
+                                    className="tooltip"
+                                    data-tip="You cannot post review your own book.">
+                                    <button
+                                        className="mt-1 px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
+                                        disabled>
+                                        Post Review
+                                    </button>
+                                </div>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded">
+                                    Post Review
+                                </button>
+                            )}
+                        </form>
+                    )
+                ) : (
+                    <p className="mt-4 text-red-500 italic">
+                        Please{' '}
+                        <Link to="/logIn" className="underline">
+                            login
+                        </Link>{' '}
+                        to write a review.
+                    </p>
+                )}
             </div>
         </section>
     );

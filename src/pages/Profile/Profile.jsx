@@ -39,7 +39,7 @@ const Profile = () => {
     }
 
     return (
-        <div className=" max-w-4xl mx-auto">
+        <div className=" max-w-4xl mx-auto my-12">
             {/* User Info */}
             <div className="flex flex-col items-center gap-4 mb-8 bg-gray-100 p-4 rounded-lg shadow">
                 <img
@@ -62,7 +62,7 @@ const Profile = () => {
                     <p>Total Books: {books.length}</p>
                     {Object.keys(categoryMap).map((cat) => (
                         <p key={cat}>
-                            {cat}: {categoryMap[cat]}
+                            {cat || 'Others Category'} : {categoryMap[cat]}
                         </p>
                     ))}
                 </div>

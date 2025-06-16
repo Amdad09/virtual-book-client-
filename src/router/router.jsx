@@ -10,11 +10,13 @@ import Register from '../pages/Register/Register';
 import LogIn from '../pages/LogIn/LogIn';
 import PrivateRoute from '../routes/PrivateRoute';
 import MyBooks from '../pages/MyBooks/MyBooks';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <MainLayout />,
+        errorElement: <ErrorMessage/>,
         children: [
             {
                 index: true,
