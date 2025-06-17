@@ -5,7 +5,13 @@ import { AuthContext } from '../contexts/AuthContext';
 import logo from '../assets/logo.png'
 import Swal from 'sweetalert2';
 const Navbar = () => {
-    const { user, logOutUser } = use(AuthContext);
+    const { user, logOutUser, loading } = use(AuthContext);
+    console.log(loading)
+
+    // if(loading) {
+    //     return <div>Loading....</div>
+    // }
+
     const handleLogOut = () => {
         logOutUser()
             .then(() => {

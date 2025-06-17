@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
     {
         path: '/',
         element: <MainLayout />,
-        errorElement: <ErrorMessage/>,
+        errorElement: <ErrorMessage />,
         children: [
             {
                 index: true,
@@ -33,7 +33,9 @@ export const router = createBrowserRouter([
             {
                 path: '/updateBook/:id',
                 loader: ({ params }) =>
-                    fetch(`http://localhost:3000/books/${params.id}`),
+                    fetch(
+                        `https://virtual-bookshelf-server.vercel.app/books/${params.id}`,
+                    ),
                 element: (
                     <PrivateRoute>
                         <UpdateBook />
@@ -50,13 +52,16 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/bookShelf',
-                loader: () => fetch('http://localhost:3000/books'),
+                loader: () =>
+                    fetch('https://virtual-bookshelf-server.vercel.app/books'),
                 Component: BookShelf,
             },
             {
                 path: '/bookDetails/:id',
                 loader: ({ params }) =>
-                    fetch(`http://localhost:3000/books/${params.id}`),
+                    fetch(
+                        `https://virtual-bookshelf-server.vercel.app/books/${params.id}`,
+                    ),
                 Component: BookDetails,
             },
             {

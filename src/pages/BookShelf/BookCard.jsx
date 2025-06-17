@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router';
-
+import { BiSolidUpvote } from 'react-icons/bi';
 const BookCard = ({ book }) => {
     const {
         _id,
@@ -37,15 +37,20 @@ const BookCard = ({ book }) => {
                     {book_overview?.slice(0, 100)}...
                 </p>
                 <p className="text-gray-600">
-                    <span className="font-semibold">Author: </span> {book_author}
+                    <span className="font-semibold">Author: </span>{' '}
+                    {book_author}
                 </p>
                 <p className="text-gray-600">
                     <span className="font-semibold">Category: </span>
-                     {book_category}
+                    {book_category}
                 </p>
-                <p className="text-gray-600">
-                    <span className="font-semibold">Upvotes: </span>
-                     {upvotes}
+                <p
+                    title="Upvoted"
+                    className="text-gray-600 flex gap-2 items-center">
+                    <span className="font-semibold">
+                        <BiSolidUpvote color="orange" />{' '}
+                    </span>
+                    {upvotes}
                 </p>
 
                 <Link

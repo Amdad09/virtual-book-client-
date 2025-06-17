@@ -1,12 +1,15 @@
+import { use } from "react";
+import { AuthContext } from "./contexts/AuthContext";
+import { router } from "./router/router";
+import Loading from "./shared/Loading";
+import { RouterProvider } from "react-router";
 
+const App = () => {
+    const { loading } = use(AuthContext);
 
-function App() {
+    if (loading) return <Loading />;
 
-  return (
-    <div>
-      <h3>This is bookshelf site</h3>
-    </div>
-  )
-}
+    return <RouterProvider router={router} />;
+};
 
-export default App
+export default App;

@@ -122,102 +122,135 @@ const Register = () => {
     };
 
     return (
-        <div className="hero bg-base-200 min-h-screen">
-            <div className="hero-content flex-col lg:flex-row-reverse">
-                <div className="text-center lg:text-left">
+        <div className="hero bg-base-200 min-h-screen p-4">
+            <div className="hero-content flex flex-col lg:flex-row-reverse items-center justify-center gap-8 max-w-7xl mx-auto">
+                {/* Animation Section */}
+                <div className="w-full max-w-md lg:max-w-lg">
                     <Lottie
-                        style={{ width: '600px' }}
+                        style={{ width: '100%', maxWidth: '600px' }}
                         animationData={register}
-                        loop={true}></Lottie>
+                        loop={true}
+                    />
                 </div>
-                <div className="card bg-base-100 w-full max-w-lg shrink-0 shadow-2xl">
-                    <div className="card-body">
-                        <div className="flex justify-center items-center">
-                            <h2 className="text-xl ">Book Hut</h2>
+
+                {/* Form Section */}
+                <div className="card bg-base-100 w-full max-w-md lg:max-w-lg shadow-2xl">
+                    <div className="card-body px-6 py-8">
+                        <div className="flex justify-center items-center mb-4">
+                            <h2 className="text-2xl font-semibold">Book Hut</h2>
                         </div>
-                        <h1 className="text-xl font-bold">Create Account </h1>
-                        <h3>
+
+                        <h1 className="text-3xl font-bold mb-2">
+                            Create Account
+                        </h1>
+
+                        <h3 className="mb-6 text-sm">
                             Already have a vitalSource account?{' '}
                             <Link
                                 to="/logIn"
-                                className="text-amber-500 underline font-semibold">
+                                className="text-amber-500 underline font-semibold hover:text-amber-600">
                                 Log In
                             </Link>
                         </h3>
-                        <form onSubmit={handleRegister} className="fieldset">
-                            <label className="label">Name</label>
-                            <input
-                                type="text"
-                                name="name"
-                                required
-                                className="input w-full"
-                                placeholder="Name"
-                            />
 
-                            <label className="label">Email</label>
-                            <input
-                                type="email"
-                                name="email"
-                                required
-                                className="input w-full"
-                                placeholder="Email"
-                            />
-
-                            <label className="label">Photo URL</label>
-                            <input
-                                type="url"
-                                name="photo"
-                                required
-                                className="input w-full"
-                                placeholder="Photo URL"
-                            />
-
-                            <label className="label">Password</label>
-                            <div className="relative">
+                        <form
+                            onSubmit={handleRegister}
+                            className="fieldset space-y-4">
+                            <div>
+                                <label className="label block mb-1 font-medium">
+                                    Name
+                                </label>
                                 <input
-                                    type={isShow ? 'text' : 'password'}
-                                    name="password"
-                                    className="input w-full"
-                                    placeholder="Password"
+                                    type="text"
+                                    name="name"
+                                    required
+                                    className="input w-full input-bordered"
+                                    placeholder="Name"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="label block mb-1 font-medium">
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    required
+                                    className="input w-full input-bordered"
+                                    placeholder="Email"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="label block mb-1 font-medium">
+                                    Photo URL
+                                </label>
+                                <input
+                                    type="url"
+                                    name="photo"
+                                    required
+                                    className="input w-full input-bordered"
+                                    placeholder="Photo URL"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="label block mb-1 font-medium">
+                                    Password
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type={isShow ? 'text' : 'password'}
+                                        name="password"
+                                        className="input w-full input-bordered pr-10"
+                                        placeholder="Password"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsShow(!isShow)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                        {isShow ? (
+                                            <FaEyeSlash size={20} />
+                                        ) : (
+                                            <FaEye size={20} />
+                                        )}
+                                    </button>
+                                </div>
+                                <p className="text-xs text-gray-600 mt-1">
+                                    6+ characters, an uppercase letter, a
+                                    lowercase letter and a digit.
+                                </p>
+                            </div>
+
+                            <div className="flex items-center space-x-2 mt-2">
+                                <input
+                                    type="checkbox"
+                                    name="terms"
+                                    className="checkbox checkbox-amber"
                                     required
                                 />
-                                <button
-                                    onClick={() => setIsShow(!isShow)}
-                                    className="right-12 top-3 absolute z-30 cursor-pointer">
-                                    {isShow ? (
-                                        <FaEyeSlash size={18} />
-                                    ) : (
-                                        <FaEye size={18} />
-                                    )}
-                                </button>
-                            </div>
-                            <p>
-                                6+ characters, an uppercase letter, a lowercase
-                                letter and a digit.
-                            </p>
-                            <div>
-                                <label className="label mt-1">
-                                    <input
-                                        type="checkbox"
-                                        name="terms"
-                                        className="checkbox text-amber-500"
-                                    />
+                                <label className="text-sm select-none">
                                     I agree to the Terms of Use and Privacy
                                     Policy
                                 </label>
                             </div>
+
                             <input
                                 type="submit"
-                                className="btn drop-shadow-md bg-amber-600 hover:bg-amber-700 btn-neutral mt-4"
-                                value="Login"
+                                className="btn bg-amber-600 hover:bg-amber-700 text-white mt-6 w-full"
+                                value="Create Account"
                             />
                         </form>
+
                         {success && (
-                            <p className="text-center text-green-600">
+                            <p className="text-center text-green-600 mt-4">
                                 Account has created successfully
                             </p>
                         )}
-                        <GoogleSignIn/>
+
+                        <GoogleSignIn />
                     </div>
                 </div>
             </div>

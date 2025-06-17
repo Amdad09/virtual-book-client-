@@ -19,6 +19,7 @@ const BookDetails = () => {
         total_page,
         reading_status,
         user_email,
+        user_name,
     } = book;
     const [reviews, setReviews] = useState([]);
     const [editingReviewId, setEditingReviewId] = useState(null);
@@ -28,7 +29,6 @@ const BookDetails = () => {
     const { user } = use(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
-    const from = location.pathname || '/';
 
     const [upvotes, setUpvotes] = useState(book.upvotes || 0);
     const ownerUser = user?.email === book.user_email;
@@ -41,13 +41,15 @@ const BookDetails = () => {
                 text: 'You must be logged in to upvote a book!',
                 confirmButtonText: 'Login Now',
             }).then(() => {
-                navigate('/logIn', { state: from });
+                navigate('/logIn', { state: { from: location.pathname } });
             });
             return;
         }
 
         try {
-            await axiosSecure.patch(`http://localhost:3000/books/${_id}/upvote`);
+            await axiosSecure.patch(
+                `https://virtual-bookshelf-server.vercel.app/books/${_id}/upvote`,
+            );
             setUpvotes((prev) => prev + 1);
         } catch {
             Swal.fire({
@@ -69,7 +71,7 @@ const BookDetails = () => {
                 text: 'You must be logged in to post a review!',
                 confirmButtonText: 'Login Now',
             }).then(() => {
-                navigate('/logIn', { state: from });
+                navigate('/logIn', { state: { from: location.pathname } });
             });
             return;
         }
@@ -102,11 +104,13 @@ const BookDetails = () => {
             });
         }
     };
-    
+
     // read review
     useEffect(() => {
         axios
-            .get(`http://localhost:3000/books/${_id}/reviews`)
+            .get(
+                `https://virtual-bookshelf-server.vercel.app/books/${_id}/reviews`,
+            )
             .then((res) => setReviews(res.data))
             .catch((error) => console.log(error));
     }, [_id]);
@@ -124,7 +128,7 @@ const BookDetails = () => {
             });
 
             document.getElementById('my_modal_1').close();
-            
+
             // Refresh list
             const updated = await axiosSecure.get(`/books/${_id}/reviews`);
             setReviews(updated.data);
@@ -137,7 +141,6 @@ const BookDetails = () => {
             });
         }
     };
-    
 
     const handleDelete = async (id) => {
         Swal.fire({
@@ -173,7 +176,6 @@ const BookDetails = () => {
             }
         });
     };
-    
 
     // if (!book)
     //     return (
@@ -181,21 +183,7 @@ const BookDetails = () => {
     //             <Loading />
     //         </p>
     //     );
-    
-        // const handleStatusChange = async (e) => {
-        //     const newStatus = e.target.value;
 
-        //     setReadingStatus(newStatus);
-
-        //     try {
-        //         await axiosSecure.patch(`/books/${_id}/reading-status`, {
-        //             reading_status: newStatus,
-        //         });
-
-        //     } catch (error) {
-        //         console.error('Failed to update status:', error);
-        //     }
-    // };
     const handleStatusUpdate = async () => {
         let nextStatus = '';
 
@@ -208,13 +196,12 @@ const BookDetails = () => {
         }
 
         const previousStatus = currentStatus;
-        setCurrentStatus(nextStatus); 
+        setCurrentStatus(nextStatus);
 
         try {
             const res = await axiosSecure.patch(
                 `/books/${_id}/reading-status`,
                 { reading_status: nextStatus },
-               
             );
 
             if (res.data.modifiedCount === 0) {
@@ -222,11 +209,9 @@ const BookDetails = () => {
             }
         } catch (err) {
             console.error('Failed to update status', err);
-            setCurrentStatus(previousStatus); 
+            setCurrentStatus(previousStatus);
         }
     };
-      
-          
 
     return (
         <section className="max-w-4xl mx-auto p-6">
@@ -243,35 +228,64 @@ const BookDetails = () => {
                     className="w-full object-cover h-full"
                 />
                 <div className="p-6 flex flex-col justify-between">
-                    <div>
-                        <h2 className="text-3xl text-gray-600 font-bold mb-2">
+                    <div className="space-y-2 text-gray-700">
+                        <h2 className="text-3xl font-bold text-gray-800">
                             {book_title}
                         </h2>
-                        <p className="text-sm text-gray-600 mb-1">
-                            Author:{' '}
-                            <span className="font-medium">{book_author}</span>
-                        </p>
-                        <p className="text-sm text-gray-600 mb-1">
-                            Category: {book_category}
-                        </p>
-                        <p className="text-sm text-gray-600 mb-1">
-                            Pages: {total_page}
-                        </p>
-                        <p className="text-sm text-gray-600 mb-1">
-                            Status: {currentStatus}
-                        </p>
-                        <p className="text-gray-700 mt-4">{book_overview}</p>
 
-                        {user?.email === user_email &&
-                            currentStatus !== 'Read' && (
-                                <button
-                                    onClick={handleStatusUpdate}
-                                    className="btn btn-primary mt-2">
-                                    {currentStatus === 'Want-to-Read'
-                                        ? 'Start Reading'
-                                        : 'Mark as Read'}
-                                </button>
-                            )}
+                        <p className="text-sm">
+                            <span className="font-semibold text-gray-600">
+                                Author:
+                            </span>{' '}
+                            {book_author}
+                        </p>
+
+                        <p className="text-sm">
+                            <span className="font-semibold text-gray-600">
+                                Category:
+                            </span>{' '}
+                            {book_category}
+                        </p>
+
+                        <p className="text-sm">
+                            <span className="font-semibold text-gray-600">
+                                Pages:
+                            </span>{' '}
+                            {total_page}
+                        </p>
+
+                        <p className="text-sm">
+                            <span className="font-semibold text-gray-600">
+                                Status:
+                            </span>{' '}
+                            {currentStatus}
+                        </p>
+
+                        <p className="text-sm">
+                            <span className="font-semibold text-gray-600">
+                                Book Woner:
+                            </span>{' '}
+                            {user_name} ({user_email})
+                        </p>
+
+                        <p className="text-base mt-4 leading-relaxed text-gray-700">
+                            {book_overview}
+                        </p>
+
+                        {user ? (
+                            <div>
+                                {user?.email === user_email &&
+                                    currentStatus !== 'Read' && (
+                                        <button
+                                            onClick={handleStatusUpdate}
+                                            className="btn btn-primary mt-4">
+                                            {currentStatus === 'Want-to-Read'
+                                                ? 'Start Reading'
+                                                : 'Mark as Read'}
+                                        </button>
+                                    )}
+                            </div>
+                        ) : null}
                     </div>
 
                     <div className="flex gap-3 justify-between items-center">

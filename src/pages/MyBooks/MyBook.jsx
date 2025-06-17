@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -19,7 +18,9 @@ const MyBook = ({ book, index, onDelete }) => {
 
         if (result.isConfirmed) {
             try {
-                await axiosSecure.delete(`http://localhost:3000/books/${id}`);
+                await axiosSecure.delete(
+                    `https://virtual-bookshelf-server.vercel.app/books/${id}`,
+                );
                 onDelete(id);
 
                 Swal.fire({
@@ -60,22 +61,22 @@ const MyBook = ({ book, index, onDelete }) => {
             </td>
 
             <td>{total_page}</td>
-            <th className='flex gap-1'>
-                <Link to={`/updateBook/${_id}`}>
-                    <button className="btn btn-ghost btn-xs bg-green-600 mr-2">
-                        Update
-                    </button>
-                </Link>
+            <td className="">
+                <div className="flex ">
+                    <Link to={`/updateBook/${_id}`}>
+                        <button className="btn btn-ghost btn-xs bg-green-600 mr-2">
+                            Update
+                        </button>
+                    </Link>
 
-                <button
-                    onClick={() => handleDelete(_id)}
-                    className="btn btn-ghost btn-xs bg-red-600">
-                    Delete
-                </button>
-            </th>
-            <th>
-                
-            </th>
+                    <button
+                        onClick={() => handleDelete(_id)}
+                        className="btn btn-ghost btn-xs bg-red-600">
+                        Delete
+                    </button>
+                </div>
+            </td>
+            <th></th>
         </tr>
     );
 };

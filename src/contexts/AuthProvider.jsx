@@ -10,7 +10,6 @@ import {
     updateProfile,
 } from 'firebase/auth';
 import { auth } from '../firebase.config';
-// import axios from 'axios';
 
 const provider = new GoogleAuthProvider();
 

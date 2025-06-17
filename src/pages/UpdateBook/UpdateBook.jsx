@@ -1,11 +1,13 @@
 import axios from 'axios';
 import React, { use } from 'react';
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext';
+import Swal from 'sweetalert2';
 
 const UpdateBook = () => {
     const book = useLoaderData();
     const { user } = use(AuthContext);
+    const navigate = useNavigate();
 
     const {
         cover_photo,
@@ -23,14 +25,31 @@ const UpdateBook = () => {
         const formData = new FormData(form);
         const bookTitle = formData.get('book_title');
         console.log(bookTitle);
+
         const data = Object.fromEntries(formData.entries());
         console.log(data);
 
         try {
-            await axios.patch(`http://localhost:3000/books/${id}`, data);
+            await axios.patch(
+                `https://virtual-bookshelf-server.vercel.app/books/${id}`,
+                data,
+            );
             console.log('book updated');
+            navigate('/myBooks');
+            Swal.fire({
+                title: 'Updated!',
+                text: 'Your book has updated successfully.',
+                icon: 'success',
+                confirmButtonText: 'Cool',
+            });
         } catch (error) {
             console.log(error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Something went wrong. Please try again later.',
+                icon: 'error',
+                confirmButtonText: 'Okay',
+            });
         }
     };
 

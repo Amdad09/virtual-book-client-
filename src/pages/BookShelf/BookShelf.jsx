@@ -9,10 +9,12 @@ const BookShelf = () => {
     const [filteredBooks, setFilteredBooks] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/books').then((res) => {
-            setBooks(res.data);
-            setFilteredBooks(res.data); 
-        });
+        axios
+            .get('https://virtual-bookshelf-server.vercel.app/books')
+            .then((res) => {
+                setBooks(res.data);
+                setFilteredBooks(res.data);
+            });
     }, []);
 
     useEffect(() => {
