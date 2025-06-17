@@ -70,9 +70,9 @@ const Navbar = () => {
                         {links}
                     </ul>
                 </div>
-                <Link to="/" className="flex gap-3">
+                <Link to="/" className="md:flex gap-3 hidden ml-3">
                     <img
-                        className="w-10 h-10 rounded-full hidden md:block"
+                        className="w-10 h-10 rounded-full "
                         src={logo}
                         alt="Logo"
                     />

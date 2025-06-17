@@ -57,12 +57,12 @@ const BookShelf = () => {
             </div>
 
             {/* Filter Form */}
-            <div className="my-6 flex flex-col md:flex-row gap-5 items-center">
+            <div className="my-6 flex flex-col md:flex-row gap-5 items-center justify-between">
                 <form onSubmit={handleSearch} className="flex gap-5">
                     <input
                         type="text"
                         name="name"
-                        className="input w-[250px]"
+                        className="input w-auto md:w-[300px]"
                         placeholder="Search by title or author"
                     />
                     <input

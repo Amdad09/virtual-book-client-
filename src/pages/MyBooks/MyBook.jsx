@@ -60,7 +60,7 @@ const MyBook = ({ book, index, onDelete }) => {
             </td>
 
             <td>{total_page}</td>
-            <th>
+            <th className='flex gap-1'>
                 <Link to={`/updateBook/${_id}`}>
                     <button className="btn btn-ghost btn-xs bg-green-600 mr-2">
                         Update
@@ -72,6 +72,9 @@ const MyBook = ({ book, index, onDelete }) => {
                     className="btn btn-ghost btn-xs bg-red-600">
                     Delete
                 </button>
+            </th>
+            <th>
+                
             </th>
         </tr>
     );

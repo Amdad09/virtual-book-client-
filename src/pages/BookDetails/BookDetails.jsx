@@ -261,7 +261,7 @@ const BookDetails = () => {
                             Status: {currentStatus}
                         </p>
                         <p className="text-gray-700 mt-4">{book_overview}</p>
-                        
+
                         {user?.email === user_email &&
                             currentStatus !== 'Read' && (
                                 <button
@@ -274,7 +274,7 @@ const BookDetails = () => {
                             )}
                     </div>
 
-                    <div className="flex justify-between items-center">
+                    <div className="flex gap-3 justify-between items-center">
                         <button
                             onClick={() => navigate(-1)}
                             className="btn btn-outline btn-warning mt-4">
@@ -286,7 +286,7 @@ const BookDetails = () => {
                                     <motion.button
                                         whileTap={{ scale: 0.9 }}
                                         onClick={handleUpvote}
-                                        className="mt-6 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
+                                        className="mt-6 px-4 py-2 btn btn-ghost btn-md bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
                                         🔼 Upvote ({upvotes})
                                     </motion.button>
                                 ) : (
@@ -294,7 +294,7 @@ const BookDetails = () => {
                                         className="tooltip"
                                         data-tip="You cannot upvote your own book.">
                                         <button
-                                            className="mt-1 px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
+                                            className="mt-1 btn btn-ghost btn-md px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
                                             disabled>
                                             🔼 Upvote ({upvotes})
                                         </button>
@@ -304,7 +304,7 @@ const BookDetails = () => {
                                 <Link to="/logIn">
                                     <motion.button
                                         whileTap={{ scale: 0.9 }}
-                                        className="mt-6 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
+                                        className="mt-6 px-4 py-2 btn btn-ghost btn-md bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
                                         🔼 Upvote ({upvotes})
                                     </motion.button>
                                 </Link>
@@ -339,7 +339,7 @@ const BookDetails = () => {
                                     <div>
                                         {/* Edit Button */}
                                         <button
-                                            className="btn"
+                                            className="btn btn-ghost btn-xs"
                                             onClick={() => {
                                                 setEditingReviewId(review._id);
                                                 setEditingText(
@@ -396,7 +396,7 @@ const BookDetails = () => {
                                             onClick={() =>
                                                 handleDelete(review._id)
                                             }
-                                            className="ml-2 btn text-red-500">
+                                            className="ml-2 btn btn-ghost btn-xs text-red-500 border border-red-500">
                                             Delete
                                         </button>
                                     </div>
