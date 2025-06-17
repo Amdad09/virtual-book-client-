@@ -11,7 +11,7 @@ const BookShelf = () => {
     useEffect(() => {
         axios.get('http://localhost:3000/books').then((res) => {
             setBooks(res.data);
-            setFilteredBooks(res.data); //
+            setFilteredBooks(res.data); 
         });
     }, []);
 

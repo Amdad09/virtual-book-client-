@@ -12,7 +12,7 @@ const FavBooks = ({ favBooksPromise }) => {
                 <h2 className="text-4xl font-extrabold text-center  mb-4">
                     Top 6 Books You Can't Miss
                 </h2>
-                <p className="text-center text-gray-300 max-w-xl mx-auto mb-10">
+                <p className="text-center text-gray-600 max-w-xl mx-auto mb-10">
                     Discover the most popular books loved by readers worldwide.
                     These handpicked gems are ranked by upvotes — explore their
                     stories, insights, and adventures!

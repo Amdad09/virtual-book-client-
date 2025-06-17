@@ -4,7 +4,6 @@ import { Link, useLoaderData, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import Loading from '../../shared/Loading';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const BookDetails = () => {
@@ -24,9 +23,7 @@ const BookDetails = () => {
     const [reviews, setReviews] = useState([]);
     const [editingReviewId, setEditingReviewId] = useState(null);
     const [editingText, setEditingText] = useState('');
-    const [readingStatus, setReadingStatus] = useState(
-        book.reading_status || 'Want-to-Read',
-    );
+    const [currentStatus, setCurrentStatus] = useState(reading_status);
 
     const { user } = use(AuthContext);
     const location = useLocation();
@@ -185,20 +182,50 @@ const BookDetails = () => {
     //         </p>
     //     );
     
-        const handleStatusChange = async (e) => {
-            const newStatus = e.target.value;
+        // const handleStatusChange = async (e) => {
+        //     const newStatus = e.target.value;
 
-            setReadingStatus(newStatus);
+        //     setReadingStatus(newStatus);
 
-            try {
-                await axiosSecure.patch(`/books/${_id}/reading-status`, {
-                    reading_status: newStatus,
-                });
+        //     try {
+        //         await axiosSecure.patch(`/books/${_id}/reading-status`, {
+        //             reading_status: newStatus,
+        //         });
 
-            } catch (error) {
-                console.error('Failed to update status:', error);
+        //     } catch (error) {
+        //         console.error('Failed to update status:', error);
+        //     }
+    // };
+    const handleStatusUpdate = async () => {
+        let nextStatus = '';
+
+        if (currentStatus === 'Want-to-Read') {
+            nextStatus = 'Reading';
+        } else if (currentStatus === 'Reading') {
+            nextStatus = 'Read';
+        } else {
+            return; // Already read
+        }
+
+        const previousStatus = currentStatus;
+        setCurrentStatus(nextStatus); 
+
+        try {
+            const res = await axiosSecure.patch(
+                `/books/${_id}/reading-status`,
+                { reading_status: nextStatus },
+               
+            );
+
+            if (res.data.modifiedCount === 0) {
+                setCurrentStatus(previousStatus);
             }
-        };
+        } catch (err) {
+            console.error('Failed to update status', err);
+            setCurrentStatus(previousStatus); 
+        }
+    };
+      
           
 
     return (
@@ -231,26 +258,20 @@ const BookDetails = () => {
                             Pages: {total_page}
                         </p>
                         <p className="text-sm text-gray-600 mb-1">
-                            Status: {reading_status}
+                            Status: {currentStatus}
                         </p>
                         <p className="text-gray-700 mt-4">{book_overview}</p>
-                        {user?.email === book.user_email && (
-                            <div className="mt-4">
-                                <label className="block text-sm text-gray-600 font-medium mb-1">
-                                    Update Reading Status:
-                                </label>
-                                <select
-                                    value={readingStatus}
-                                    onChange={handleStatusChange}
-                                    className="select select-bordered w-full max-w-xs">
-                                    <option value="Want-to-Read">
-                                        Want-to-Read
-                                    </option>
-                                    <option value="Reading">Reading</option>
-                                    <option value="Read">Read</option>
-                                </select>
-                            </div>
-                        )}
+                        
+                        {user?.email === user_email &&
+                            currentStatus !== 'Read' && (
+                                <button
+                                    onClick={handleStatusUpdate}
+                                    className="btn btn-primary mt-2">
+                                    {currentStatus === 'Want-to-Read'
+                                        ? 'Start Reading'
+                                        : 'Mark as Read'}
+                                </button>
+                            )}
                     </div>
 
                     <div className="flex justify-between items-center">
@@ -261,15 +282,14 @@ const BookDetails = () => {
                         </button>
                         <div>
                             {user ? (
-                                
-                                    user?.email !== user_email ? (
+                                user?.email !== user_email ? (
                                     <motion.button
                                         whileTap={{ scale: 0.9 }}
                                         onClick={handleUpvote}
                                         className="mt-6 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
                                         🔼 Upvote ({upvotes})
                                     </motion.button>
-                                    ) : 
+                                ) : (
                                     <div
                                         className="tooltip"
                                         data-tip="You cannot upvote your own book.">
@@ -279,8 +299,7 @@ const BookDetails = () => {
                                             🔼 Upvote ({upvotes})
                                         </button>
                                     </div>
-                                    
-                               
+                                )
                             ) : (
                                 <Link to="/logIn">
                                     <motion.button

@@ -40,7 +40,7 @@ const AddBook = () => {
         <div>
             <div className="text-center mt-12">
                 <h1 className="text-3xl font-bold mb-2">Add A New Book</h1>
-                <p className="text-gray-400 mb-6">
+                <p className="text-gray-500 mb-6">
                     Fill out the form below to add a new book to your shelf.
                 </p>
             </div>
