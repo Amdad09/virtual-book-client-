@@ -48,7 +48,7 @@ const BookShelf = () => {
     };
 
     return (
-        <div className="w-11/12 mx-auto">
+        <div className="w-11/12 mx-auto pb-14">
             <div className="my-12">
                 <h2 className="text-3xl font-bold text-center mb-2">
                     Popular Books
@@ -80,7 +80,7 @@ const BookShelf = () => {
                     <option value="">All Status</option>
                     <option value="Read">Read</option>
                     <option value="Reading">Reading</option>
-                    <option value="Want to Read">Want to Read</option>
+                    <option value="Want-to-Read">Want to Read</option>
                 </select>
             </div>
 

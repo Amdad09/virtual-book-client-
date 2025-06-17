@@ -7,14 +7,11 @@ import { FaEyeSlash } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Lottie from 'lottie-react';
 import GoogleSignIn from '../../shared/GoogleSignIn';
+import { setLogLevel } from 'firebase/app';
 
 const Register = () => {
-    const { createUser, updateUser } = use(AuthContext);
-    // console.log(user);
-    const [success, setSuccess] = useState(false);
-    // const [errorMessage, setErrorMessage] = useState('');
+    const { createUser, updateUser, setLoading } = use(AuthContext);
     const [isShow, setIsShow] = useState(false);
-    // console.log(createUser)
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -29,7 +26,6 @@ const Register = () => {
             formData.entries(),
         );
 
-        setSuccess(false);
 
         if (password.length === 0) {
             Swal.fire({
@@ -98,6 +94,7 @@ const Register = () => {
                 updateUser(profile)
                     .then(() => {
                         console.log('profile updated');
+                        setLoading(false);
                     })
                     .catch((error) => console.log(error));
 
@@ -108,7 +105,6 @@ const Register = () => {
                     confirmButtonText: 'Continue',
                 });
 
-                setSuccess(true);
                 navigate(location?.state || '/');
             })
             .catch((error) => {
@@ -244,11 +240,6 @@ const Register = () => {
                             />
                         </form>
 
-                        {success && (
-                            <p className="text-center text-green-600 mt-4">
-                                Account has created successfully
-                            </p>
-                        )}
 
                         <GoogleSignIn />
                     </div>

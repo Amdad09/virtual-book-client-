@@ -14,7 +14,7 @@ const MainLayout = () => {
     return (
         <div>
             <Navbar />
-            <div className="py-14">
+            <div className="pt-14">
                 <motion.div
                     key={location.pathname}
                     variants={pageVariants}
