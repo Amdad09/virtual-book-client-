@@ -7,7 +7,6 @@ import { FaEyeSlash } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Lottie from 'lottie-react';
 import GoogleSignIn from '../../shared/GoogleSignIn';
-import { setLogLevel } from 'firebase/app';
 
 const Register = () => {
     const { createUser, updateUser, setLoading } = use(AuthContext);

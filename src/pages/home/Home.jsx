@@ -1,19 +1,19 @@
-import React, { Suspense } from 'react';
-import Banner from './Banner';
-import FeaturedCategories from './FeaturedCategories/FeaturedCategories';
+import { Suspense } from 'react';
 import Loading from '../../shared/Loading';
-import OnlineData from './OnlineData/OnlineData';
+import Banner from './Banner';
 import CreatorsMessage from './CreatorsMessage/CreatorsMessage';
 import FavBooks from './FavBooks/FavBooks';
+import FeaturedCategories from './FeaturedCategories/FeaturedCategories';
+import OnlineData from './OnlineData/OnlineData';
 
 const Home = () => {
-    const booksPromise = fetch(
-        'https://virtual-bookshelf-server.vercel.app/books',
-    ).then((res) => res.json());
+    const booksPromise = fetch('http://localhost:3000/books').then((res) =>
+        res.json(),
+    );
 
-    const favBooksPromise = fetch(
-        'https://virtual-bookshelf-server.vercel.app/books/top',
-    ).then((res) => res.json());
+    const favBooksPromise = fetch('http://localhost:3000/books/top').then(
+        (res) => res.json(),
+    );
 
     return (
         <div>

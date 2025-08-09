@@ -1,16 +1,16 @@
 import { createBrowserRouter } from 'react-router';
-import MainLayout from '../layouts/MainLayout';
-import Home from '../pages/home/Home';
-import AddBook from '../pages/AddBook/AddBook';
-import UpdateBook from '../pages/UpdateBook/UpdateBook';
-import Profile from '../pages/Profile/Profile';
-import BookShelf from '../pages/BookShelf/BookShelf';
-import BookDetails from '../pages/BookDetails/BookDetails';
-import Register from '../pages/Register/Register';
-import LogIn from '../pages/LogIn/LogIn';
-import PrivateRoute from '../routes/PrivateRoute';
-import MyBooks from '../pages/MyBooks/MyBooks';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import MainLayout from '../layouts/MainLayout';
+import AddBook from '../pages/AddBook/AddBook';
+import BookDetails from '../pages/BookDetails/BookDetails';
+import BookShelf from '../pages/BookShelf/BookShelf';
+import Home from '../pages/home/Home';
+import LogIn from '../pages/LogIn/LogIn';
+import MyBooks from '../pages/MyBooks/MyBooks';
+import Profile from '../pages/Profile/Profile';
+import Register from '../pages/Register/Register';
+import UpdateBook from '../pages/UpdateBook/UpdateBook';
+import PrivateRoute from '../routes/PrivateRoute';
 
 export const router = createBrowserRouter([
     {
@@ -33,9 +33,7 @@ export const router = createBrowserRouter([
             {
                 path: '/updateBook/:id',
                 loader: ({ params }) =>
-                    fetch(
-                        `https://virtual-bookshelf-server.vercel.app/books/${params.id}`,
-                    ),
+                    fetch(`http://localhost:3000/books/${params.id}`),
                 element: (
                     <PrivateRoute>
                         <UpdateBook />
@@ -52,16 +50,13 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/bookShelf',
-                loader: () =>
-                    fetch('https://virtual-bookshelf-server.vercel.app/books'),
+                loader: () => fetch('http://localhost:3000/books'),
                 Component: BookShelf,
             },
             {
                 path: '/bookDetails/:id',
                 loader: ({ params }) =>
-                    fetch(
-                        `https://virtual-bookshelf-server.vercel.app/books/${params.id}`,
-                    ),
+                    fetch(`http://localhost:3000/books/${params.id}`),
                 Component: BookDetails,
             },
             {

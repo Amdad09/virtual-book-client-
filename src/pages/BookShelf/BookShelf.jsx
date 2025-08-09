@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import BookCard from './BookCard';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import BookCard from './BookCard';
 
 const BookShelf = () => {
     const [books, setBooks] = useState([]);
@@ -9,12 +9,10 @@ const BookShelf = () => {
     const [filteredBooks, setFilteredBooks] = useState([]);
 
     useEffect(() => {
-        axios
-            .get('https://virtual-bookshelf-server.vercel.app/books')
-            .then((res) => {
-                setBooks(res.data);
-                setFilteredBooks(res.data);
-            });
+        axios.get('http://localhost:3000/books').then((res) => {
+            setBooks(res.data);
+            setFilteredBooks(res.data);
+        });
     }, []);
 
     useEffect(() => {
@@ -76,7 +74,8 @@ const BookShelf = () => {
 
                 <select
                     onChange={handleStatusChange}
-                    className="select border rounded p-2 w-[200px]">
+                    className="select border rounded p-2 w-[200px]"
+                >
                     <option value="">All Status</option>
                     <option value="Read">Read</option>
                     <option value="Reading">Reading</option>

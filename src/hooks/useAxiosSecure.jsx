@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useMemo, use } from 'react';
+import { use, useMemo } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 
 const useAxiosSecure = () => {
@@ -8,7 +8,7 @@ const useAxiosSecure = () => {
 
     const axiosSecure = useMemo(() => {
         const instance = axios.create({
-            baseURL: 'https://virtual-bookshelf-server.vercel.app',
+            baseURL: 'http://localhost:3000',
         });
 
         instance.interceptors.request.use((config) => {

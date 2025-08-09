@@ -18,9 +18,7 @@ const MyBook = ({ book, index, onDelete }) => {
 
         if (result.isConfirmed) {
             try {
-                await axiosSecure.delete(
-                    `https://virtual-bookshelf-server.vercel.app/books/${id}`,
-                );
+                await axiosSecure.delete(`http://localhost:3000/books/${id}`);
                 onDelete(id);
 
                 Swal.fire({
@@ -71,7 +69,8 @@ const MyBook = ({ book, index, onDelete }) => {
 
                     <button
                         onClick={() => handleDelete(_id)}
-                        className="btn btn-ghost btn-xs bg-red-600">
+                        className="btn btn-ghost btn-xs bg-red-600"
+                    >
                         Delete
                     </button>
                 </div>

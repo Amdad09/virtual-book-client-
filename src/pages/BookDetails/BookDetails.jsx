@@ -1,9 +1,9 @@
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import { use, useEffect, useState } from 'react';
 import { Link, useLoaderData, useLocation, useNavigate } from 'react-router';
-import { AuthContext } from '../../contexts/AuthContext';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../../contexts/AuthContext';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const BookDetails = () => {
@@ -48,7 +48,7 @@ const BookDetails = () => {
 
         try {
             await axiosSecure.patch(
-                `https://virtual-bookshelf-server.vercel.app/books/${_id}/upvote`,
+                `http://localhost:3000/books/${_id}/upvote`,
             );
             setUpvotes((prev) => prev + 1);
         } catch {
@@ -108,9 +108,7 @@ const BookDetails = () => {
     // read review
     useEffect(() => {
         axios
-            .get(
-                `https://virtual-bookshelf-server.vercel.app/books/${_id}/reviews`,
-            )
+            .get(`http://localhost:3000/books/${_id}/reviews`)
             .then((res) => setReviews(res.data))
             .catch((error) => console.log(error));
     }, [_id]);
@@ -278,7 +276,8 @@ const BookDetails = () => {
                                     currentStatus !== 'Read' && (
                                         <button
                                             onClick={handleStatusUpdate}
-                                            className="btn btn-primary mt-4">
+                                            className="btn btn-primary mt-4"
+                                        >
                                             {currentStatus === 'Want-to-Read'
                                                 ? 'Start Reading'
                                                 : 'Mark as Read'}
@@ -291,7 +290,8 @@ const BookDetails = () => {
                     <div className="flex gap-3 justify-between items-center">
                         <button
                             onClick={() => navigate(-1)}
-                            className="btn btn-outline btn-warning mt-4">
+                            className="btn btn-outline btn-warning mt-4"
+                        >
                             ⬅️ Go Back
                         </button>
                         <div>
@@ -300,16 +300,19 @@ const BookDetails = () => {
                                     <motion.button
                                         whileTap={{ scale: 0.9 }}
                                         onClick={handleUpvote}
-                                        className="mt-6 px-4 py-2 btn btn-ghost btn-md bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
+                                        className="mt-6 px-4 py-2 btn btn-ghost btn-md bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
+                                    >
                                         🔼 Upvote ({upvotes})
                                     </motion.button>
                                 ) : (
                                     <div
                                         className="tooltip"
-                                        data-tip="You cannot upvote your own book.">
+                                        data-tip="You cannot upvote your own book."
+                                    >
                                         <button
                                             className="mt-1 btn btn-ghost btn-md px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
-                                            disabled>
+                                            disabled
+                                        >
                                             🔼 Upvote ({upvotes})
                                         </button>
                                     </div>
@@ -318,7 +321,8 @@ const BookDetails = () => {
                                 <Link to="/logIn">
                                     <motion.button
                                         whileTap={{ scale: 0.9 }}
-                                        className="mt-6 px-4 py-2 btn btn-ghost btn-md bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors">
+                                        className="mt-6 px-4 py-2 btn btn-ghost btn-md bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
+                                    >
                                         🔼 Upvote ({upvotes})
                                     </motion.button>
                                 </Link>
@@ -345,7 +349,8 @@ const BookDetails = () => {
                     reviews.map((review) => (
                         <div
                             key={review._id}
-                            className="border rounded text-white p-4 mb-3 bg-gray-800">
+                            className="border rounded text-white p-4 mb-3 bg-gray-800"
+                        >
                             <p>{review.review_text}</p>
                             <div className="flex justify-between text-sm mt-2 text-gray-400">
                                 <span>{review.user_email}</span>
@@ -364,14 +369,16 @@ const BookDetails = () => {
                                                         'my_modal_1',
                                                     )
                                                     .showModal();
-                                            }}>
+                                            }}
+                                        >
                                             Edit
                                         </button>
 
                                         {/* Edit Modal */}
                                         <dialog
                                             id="my_modal_1"
-                                            className="modal">
+                                            className="modal"
+                                        >
                                             <div className="modal-box">
                                                 <h3 className="font-bold text-lg mb-2">
                                                     ✏️ Edit Review
@@ -398,7 +405,8 @@ const BookDetails = () => {
                                                                 editingReviewId,
                                                                 editingText,
                                                             )
-                                                        }>
+                                                        }
+                                                    >
                                                         Save
                                                     </button>
                                                 </div>
@@ -410,7 +418,8 @@ const BookDetails = () => {
                                             onClick={() =>
                                                 handleDelete(review._id)
                                             }
-                                            className="ml-2 btn btn-ghost btn-xs text-red-500 border border-red-500">
+                                            className="ml-2 btn btn-ghost btn-xs text-red-500 border border-red-500"
+                                        >
                                             Delete
                                         </button>
                                     </div>
@@ -429,26 +438,31 @@ const BookDetails = () => {
                     ) : (
                         <form
                             onSubmit={(e) => handlePostReview(e, _id)}
-                            className="mt-4">
+                            className="mt-4"
+                        >
                             <textarea
                                 className="w-full border rounded p-2"
                                 name="review"
                                 placeholder="Write your review..."
-                                required></textarea>
+                                required
+                            ></textarea>
                             {ownerUser ? (
                                 <div
                                     className="tooltip"
-                                    data-tip="You cannot post review your own book.">
+                                    data-tip="You cannot post review your own book."
+                                >
                                     <button
                                         className="mt-1 px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
-                                        disabled>
+                                        disabled
+                                    >
                                         Post Review
                                     </button>
                                 </div>
                             ) : (
                                 <button
                                     type="submit"
-                                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded">
+                                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
+                                >
                                     Post Review
                                 </button>
                             )}

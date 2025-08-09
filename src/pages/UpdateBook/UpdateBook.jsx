@@ -1,8 +1,8 @@
 import axios from 'axios';
-import React, { use } from 'react';
+import { use } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
-import { AuthContext } from '../../contexts/AuthContext';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const UpdateBook = () => {
     const book = useLoaderData();
@@ -30,10 +30,7 @@ const UpdateBook = () => {
         console.log(data);
 
         try {
-            await axios.patch(
-                `https://virtual-bookshelf-server.vercel.app/books/${id}`,
-                data,
-            );
+            await axios.patch(`http://localhost:3000/books/${id}`, data);
             console.log('book updated');
             navigate('/myBooks');
             Swal.fire({
@@ -64,7 +61,8 @@ const UpdateBook = () => {
 
             <form
                 onSubmit={(e) => handleUpdateBook(e, book._id)}
-                className="p-6 rounded-xl shadow-md space-y-4">
+                className="p-6 rounded-xl shadow-md space-y-4"
+            >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
                     {/* Book Title */}
                     <div>
@@ -157,7 +155,8 @@ const UpdateBook = () => {
                         <select
                             name="book_category"
                             defaultValue={book_category}
-                            className="select border px-3 py-2 w-full rounded-lg">
+                            className="select border px-3 py-2 w-full rounded-lg"
+                        >
                             <option value="">Select a category</option>
                             <option value="Fiction">Fiction</option>
                             <option value="Non-Fiction">Non-Fiction</option>
@@ -173,7 +172,8 @@ const UpdateBook = () => {
                         <select
                             name="reading_status"
                             defaultValue={reading_status}
-                            className="w-full select border px-3 py-2 rounded-lg">
+                            className="w-full select border px-3 py-2 rounded-lg"
+                        >
                             <option value="">Select status</option>
                             <option value="Read">Read</option>
                             <option value="Reading">Reading</option>
@@ -191,7 +191,8 @@ const UpdateBook = () => {
                         defaultValue={book_overview}
                         className="w-full border px-3 py-2 rounded-lg"
                         rows="4"
-                        placeholder="Write a short overview of the book..."></textarea>
+                        placeholder="Write a short overview of the book..."
+                    ></textarea>
                 </div>
                 {/* Submit Button */}
                 <div className="text-center">
