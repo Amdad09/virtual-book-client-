@@ -119,22 +119,7 @@ const Navbar = () => {
                         className="w-10 h-10 rounded-full shadow-md"
                     />
                     <h2
-                        className="text-3xl md:text-4xl 
-    font-sans 
-    font-bold 
-    tracking-tight 
-    bg-gradient-to-r 
-    from-amber-700 
-    via-amber-500 
-    to-amber-700 
-    bg-clip-text 
-    text-transparent 
-    drop-shadow-sm 
-    transition 
-    duration-200 
-    hover:scale-[1.02] 
-    hover:drop-shadow-md 
-    cursor-pointer"
+                        className="text-3xl md:text-4xl font-sans font-bold tracking-tight bg-gradient-to-r from-amber-700 via-amber-500 to-amber-700 bg-clip-text text-transparent drop-shadow-sm transition duration-200 hover:scale-[1.02] hover:drop-shadow-md cursor-pointer"
                     >
                         Book Hut
                     </h2>

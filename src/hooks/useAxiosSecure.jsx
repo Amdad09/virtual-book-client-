@@ -8,7 +8,7 @@ const useAxiosSecure = () => {
 
     const axiosSecure = useMemo(() => {
         const instance = axios.create({
-            baseURL: 'https://virtual-bookshelf-server.vercel.app',
+            baseURL: 'http://localhost:3000',
         });
 
         instance.interceptors.request.use((config) => {
