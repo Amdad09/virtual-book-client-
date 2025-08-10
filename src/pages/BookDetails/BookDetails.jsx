@@ -48,7 +48,7 @@ const BookDetails = () => {
 
         try {
             await axiosSecure.patch(
-                `http://localhost:3000/books/${_id}/upvote`,
+                `https://virtual-bookshelf-server.vercel.app/books/${_id}/upvote`,
             );
             setUpvotes((prev) => prev + 1);
         } catch {
@@ -108,7 +108,9 @@ const BookDetails = () => {
     // read review
     useEffect(() => {
         axios
-            .get(`http://localhost:3000/books/${_id}/reviews`)
+            .get(
+                `https://virtual-bookshelf-server.vercel.app/books/${_id}/reviews`,
+            )
             .then((res) => setReviews(res.data))
             .catch((error) => console.log(error));
     }, [_id]);

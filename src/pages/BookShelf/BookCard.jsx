@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Link } from 'react-router';
 import { BiSolidUpvote } from 'react-icons/bi';
@@ -20,7 +20,7 @@ const BookCard = ({ book }) => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border overflow-hidden">
+            className="rounded-2xl shadow-md dark:border dark:border-gray-600 hover:shadow-xl transition-shadow duration-300 overflow-hidden">
             <figure className="w-full h-64 overflow-hidden">
                 <img
                     src={cover_photo}
@@ -33,20 +33,20 @@ const BookCard = ({ book }) => {
                 <h2 className="text-xl font-semibold text-gray-800">
                     {book_title}
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className=" text-sm">
                     {book_overview?.slice(0, 100)}...
                 </p>
-                <p className="text-gray-600">
+                <p className="">
                     <span className="font-semibold">Author: </span>{' '}
                     {book_author}
                 </p>
-                <p className="text-gray-600">
+                <p className="">
                     <span className="font-semibold">Category: </span>
                     {book_category}
                 </p>
                 <p
                     title="Upvoted"
-                    className="text-gray-600 flex gap-2 items-center">
+                    className=" flex gap-2 items-center">
                     <span className="font-semibold">
                         <BiSolidUpvote color="orange" />{' '}
                     </span>

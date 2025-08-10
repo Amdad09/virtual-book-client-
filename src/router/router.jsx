@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import MainLayout from '../layouts/MainLayout';
+import AboutUs from '../pages/AboutUs/AboutUs';
 import AddBook from '../pages/AddBook/AddBook';
 import BookDetails from '../pages/BookDetails/BookDetails';
 import BookShelf from '../pages/BookShelf/BookShelf';
@@ -31,9 +32,15 @@ export const router = createBrowserRouter([
                 ),
             },
             {
+                path: '/aboutUs',
+                element: <AboutUs />,
+            },
+            {
                 path: '/updateBook/:id',
                 loader: ({ params }) =>
-                    fetch(`http://localhost:3000/books/${params.id}`),
+                    fetch(
+                        `https://virtual-bookshelf-server.vercel.app/books/${params.id}`,
+                    ),
                 element: (
                     <PrivateRoute>
                         <UpdateBook />
@@ -50,13 +57,16 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/bookShelf',
-                loader: () => fetch('http://localhost:3000/books'),
+                loader: () =>
+                    fetch('https://virtual-bookshelf-server.vercel.app/books'),
                 Component: BookShelf,
             },
             {
                 path: '/bookDetails/:id',
                 loader: ({ params }) =>
-                    fetch(`http://localhost:3000/books/${params.id}`),
+                    fetch(
+                        `https://virtual-bookshelf-server.vercel.app/books/${params.id}`,
+                    ),
                 Component: BookDetails,
             },
             {

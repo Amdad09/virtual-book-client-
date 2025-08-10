@@ -1,5 +1,5 @@
 
-import React, { use } from 'react';
+import { use } from 'react';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router';
@@ -18,7 +18,6 @@ const AddBook = () => {
 
         try {
             await axiosSecure.post('/books', data);
-            console.log('book added');
             navigate('/myBooks');
             Swal.fire({
                 title: 'Success!',
